@@ -1,0 +1,17 @@
+// Copy this file to Environment.swift and fill in your values.
+// Environment.swift is .gitignored — never commit secrets.
+
+enum Environment {
+    /// Supabase project URL — Dashboard → Project Settings → API
+    static let supabaseURL = URL(string: "https://your-project.supabase.co")!
+    /// Supabase anon (public) key
+    static let supabaseAnonKey = "your-anon-key"
+    /// Production API base URL (your Vercel deployment)
+    static let apiBaseURL = URL(string: "https://your-app.vercel.app")!
+    /// Set to true to point at localhost:3000 during development
+    static let isDevelopment = false
+    /// Override apiBaseURL in development
+    static var effectiveBaseURL: URL {
+        isDevelopment ? URL(string: "http://localhost:3000")! : apiBaseURL
+    }
+}
