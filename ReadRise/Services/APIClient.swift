@@ -48,7 +48,7 @@ final class APIClient: Sendable {
             throw APIError.notAuthenticated
         }
 
-        var components = URLComponents(url: Environment.effectiveBaseURL, resolvingAgainstBaseURL: false)!
+        var components = URLComponents(url: AppConfig.effectiveBaseURL, resolvingAgainstBaseURL: false)!
         components.path = path
         if !queryItems.isEmpty { components.queryItems = queryItems }
 
@@ -138,8 +138,11 @@ final class SupabaseManager: @unchecked Sendable {
 
     private init() {
         client = SupabaseClient(
-            supabaseURL: Environment.supabaseURL,
-            supabaseKey: Environment.supabaseAnonKey
+            supabaseURL: AppConfig.supabaseURL,
+            supabaseKey: AppConfig.supabaseAnonKey,
+            options: SupabaseClientOptions(
+                auth: .init(emitLocalSessionAsInitialSession: true)
+            )
         )
     }
 }

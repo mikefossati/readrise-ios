@@ -29,6 +29,6 @@ struct MainTabView: View {
                 }
                 .tag(3)
         }
-        .tint(Color(hex: "#e8923a"))
+        .tint(Color.rrAmber)
     }
 }

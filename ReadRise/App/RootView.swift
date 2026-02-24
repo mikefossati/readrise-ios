@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct RootView: View {
-    @Environment(AuthService.self) private var auth
+    @Environment(AuthService.self) private var auth: AuthService
 
     var body: some View {
         Group {
             if auth.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color(hex: "#faf8f4"))
+                Color.rrBackground
+                    .ignoresSafeArea()
+                    .overlay(ProgressView().tint(Color.rrAmber))
             } else if auth.isAuthenticated {
                 MainTabView()
             } else {

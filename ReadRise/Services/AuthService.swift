@@ -1,7 +1,8 @@
 import Foundation
+import CryptoKit
 import Supabase
 import AuthenticationServices
-import SwiftUI
+import UIKit
 
 @Observable
 @MainActor
@@ -10,34 +11,30 @@ final class AuthService: NSObject {
     var isLoading = true
     var errorMessage: String?
 
-    private var authStateTask: Task<Void, Never>?
-
     override init() {
         super.init()
         startListening()
     }
 
-    deinit {
-        authStateTask?.cancel()
-    }
-
+    // No stored task — [weak self] means the loop exits naturally if AuthService
+    // is ever deallocated. Task is retained by the runtime until it finishes.
     private func startListening() {
-        authStateTask = Task {
-            for await (event, session) in await SupabaseManager.shared.client.auth.authStateChanges {
-                await MainActor.run {
-                    switch event {
-                    case .initialSession:
-                        self.isAuthenticated = session != nil
-                        self.isLoading = false
-                    case .signedIn:
-                        self.isAuthenticated = true
-                        self.isLoading = false
-                    case .signedOut, .userDeleted:
-                        self.isAuthenticated = false
-                        self.isLoading = false
-                    default:
-                        break
-                    }
+        Task { [weak self] in
+            // authStateChanges is a plain AsyncStream — no `await` needed here
+            for await (event, session) in SupabaseManager.shared.client.auth.authStateChanges {
+                guard let self else { return }
+                switch event {
+                case .initialSession:
+                    self.isAuthenticated = session != nil
+                    self.isLoading = false
+                case .signedIn:
+                    self.isAuthenticated = true
+                    self.isLoading = false
+                case .signedOut, .userDeleted:
+                    self.isAuthenticated = false
+                    self.isLoading = false
+                default:
+                    break
                 }
             }
         }
@@ -61,21 +58,42 @@ final class AuthService: NSObject {
         }
     }
 
-    // MARK: - Sign in with Google (OAuth via browser)
+    // MARK: - Sign in with Google (ASWebAuthenticationSession)
 
     func signInWithGoogle() async {
         errorMessage = nil
         do {
+            // launchFlow: receives the Supabase auth URL, opens it via ASWebAuthenticationSession,
+            // returns the callback URL (readrise://auth-callback?code=...) so supabase-swift
+            // can exchange the code for a session internally.
             try await SupabaseManager.shared.client.auth.signInWithOAuth(
                 provider: .google,
                 redirectTo: URL(string: "readrise://auth-callback")!
-            ) { [weak self] url in
-                Task { @MainActor in
-                    self?.openURL(url)
-                }
+            ) { [weak self] url -> URL in
+                guard let self else { throw URLError(.cancelled) }
+                return try await self.presentWebAuthSession(url: url)
             }
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+
+    /// Opens the OAuth URL in ASWebAuthenticationSession and returns the callback URL.
+    private func presentWebAuthSession(url: URL) async throws -> URL {
+        try await withCheckedThrowingContinuation { continuation in
+            let session = ASWebAuthenticationSession(
+                url: url,
+                callbackURLScheme: "readrise"
+            ) { callbackURL, error in
+                if let callbackURL {
+                    continuation.resume(returning: callbackURL)
+                } else {
+                    continuation.resume(throwing: error ?? URLError(.cancelled))
+                }
+            }
+            session.presentationContextProvider = self
+            session.prefersEphemeralWebBrowserSession = false
+            session.start()
         }
     }
 
@@ -97,11 +115,7 @@ final class AuthService: NSObject {
         }
     }
 
-    // MARK: - Private helpers
-
-    private func openURL(_ url: URL) {
-        UIApplication.shared.open(url)
-    }
+    // MARK: - Apple Sign In helpers
 
     private func performAppleSignIn() async throws -> (String, String) {
         return try await withCheckedThrowingContinuation { continuation in
@@ -129,7 +143,6 @@ final class AuthService: NSObject {
             controller.delegate = delegate
             controller.presentationContextProvider = delegate
             controller.performRequests()
-            // Keep delegate alive
             objc_setAssociatedObject(controller, &AppleSignInDelegate.key, delegate, .OBJC_ASSOCIATION_RETAIN)
         }
     }
@@ -156,10 +169,20 @@ final class AuthService: NSObject {
     }
 
     private func sha256(_ input: String) -> String {
-        import CryptoKit
         let data = Data(input.utf8)
         let hash = SHA256.hash(data: data)
         return hash.compactMap { String(format: "%02x", $0) }.joined()
+    }
+}
+
+// MARK: - ASWebAuthenticationPresentationContextProviding
+
+extension AuthService: ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow } ?? UIWindow()
     }
 }
 
@@ -172,15 +195,20 @@ enum AuthError: LocalizedError {
 
 // MARK: - Apple Sign In Delegate
 
-private final class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding, @unchecked Sendable {
-    nonisolated(unsafe) static var key = "delegate"
+private final class AppleSignInDelegate: NSObject,
+    ASAuthorizationControllerDelegate,
+    ASAuthorizationControllerPresentationContextProviding,
+    @unchecked Sendable
+{
+    nonisolated(unsafe) static var key: UInt8 = 0
     let completion: @Sendable (Result<ASAuthorizationAppleIDCredential, Error>) -> Void
 
     init(completion: @escaping @Sendable (Result<ASAuthorizationAppleIDCredential, Error>) -> Void) {
         self.completion = completion
     }
 
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    func authorizationController(controller: ASAuthorizationController,
+                                 didCompleteWithAuthorization authorization: ASAuthorization) {
         if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
             completion(.success(credential))
         } else {

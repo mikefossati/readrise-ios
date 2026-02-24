@@ -1,7 +1,9 @@
 // Copy this file to Environment.swift and fill in your values.
 // Environment.swift is .gitignored — never commit secrets.
 
-enum Environment {
+import Foundation
+
+enum AppConfig {
     /// Supabase project URL — Dashboard → Project Settings → API
     static let supabaseURL = URL(string: "https://your-project.supabase.co")!
     /// Supabase anon (public) key

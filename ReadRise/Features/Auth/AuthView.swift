@@ -1,36 +1,33 @@
 import SwiftUI
-import AuthenticationServices
 
 struct AuthView: View {
-    @Environment(AuthService.self) private var auth
+    @Environment(AuthService.self) private var auth: AuthService
     @State private var isLoading = false
 
     var body: some View {
         ZStack {
-            Color(hex: "#faf8f4").ignoresSafeArea()
+            Color.rrBackground.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 Spacer()
 
-                // Logo + headline
                 VStack(spacing: 16) {
                     Image(systemName: "book.closed.fill")
-                        .font(.system(size: 48))
-                        .foregroundStyle(Color(hex: "#e8923a"))
+                        .font(.system(size: 56))
+                        .foregroundStyle(Color.rrAmber)
 
                     Text("ReadRise")
                         .font(.custom("Georgia", size: 36).bold())
-                        .foregroundStyle(Color(hex: "#1a1a2e"))
+                        .foregroundStyle(Color.rrLabel)
 
                     Text("Track books. Build a streak.\nUnderstand how you read.")
                         .font(.subheadline)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                         .multilineTextAlignment(.center)
                 }
 
                 Spacer()
 
-                // Sign in buttons
                 VStack(spacing: 12) {
                     if let error = auth.errorMessage {
                         Text(error)
@@ -40,23 +37,29 @@ struct AuthView: View {
                             .padding(.horizontal)
                     }
 
-                    // Sign in with Apple
-                    SignInWithAppleButton(.signIn) { request in
-                        request.requestedScopes = [.fullName, .email]
-                    } onCompletion: { _ in
-                        // Handled via AuthService
-                    }
-                    .frame(height: 50)
-                    .cornerRadius(10)
-                    .onTapGesture {
+                    // Custom Apple Sign In button — calls our ASAuthorizationController directly.
+                    // Using SignInWithAppleButton + onTapGesture triggers two controllers at once.
+                    Button {
                         Task {
                             isLoading = true
                             await auth.signInWithApple()
                             isLoading = false
                         }
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "apple.logo")
+                                .font(.body.weight(.semibold))
+                            Text("Sign in with Apple")
+                                .font(.body.weight(.semibold))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(Color(.label))
+                        .foregroundStyle(Color(.systemBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
+                    .disabled(isLoading)
 
-                    // Continue with Google
                     Button {
                         Task {
                             isLoading = true
@@ -71,13 +74,10 @@ struct AuthView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
-                        .background(Color.white)
-                        .foregroundStyle(Color(hex: "#1a1a2e"))
-                        .cornerRadius(10)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color(hex: "#ddd5c8"), lineWidth: 1)
-                        )
+                        .background(Color.rrCard)
+                        .foregroundStyle(Color.rrLabel)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.rrBorder, lineWidth: 1))
                     }
                     .disabled(isLoading)
                 }
@@ -86,8 +86,8 @@ struct AuthView: View {
             }
 
             if isLoading {
-                Color.black.opacity(0.1).ignoresSafeArea()
-                ProgressView()
+                Color.black.opacity(0.25).ignoresSafeArea()
+                ProgressView().tint(.white)
             }
         }
     }

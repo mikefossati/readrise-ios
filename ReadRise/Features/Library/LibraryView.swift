@@ -8,8 +8,6 @@ struct LibraryView: View {
     @State private var selectedBook: UserBook?
     @State private var bookLimitAlert = false
 
-    private let tabs = ["Want to Read", "Finished", "Abandoned"]
-
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -17,35 +15,29 @@ struct LibraryView: View {
                     if vm.isLoading {
                         ProgressView().padding(.top, 40)
                     } else {
-                        // Now Reading band
                         if !vm.nowReading.isEmpty {
                             nowReadingBand
                         }
-                        // Shelf tabs
                         shelfSection
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
             }
-            .background(Color(hex: "#faf8f4"))
+            .background(Color.rrBackground)
             .navigationTitle("Library")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    HStack(spacing: 8) {
-                        Button {
-                            showBarcode = true
-                        } label: {
+                    HStack(spacing: 14) {
+                        Button { showBarcode = true } label: {
                             Image(systemName: "barcode.viewfinder")
                         }
-                        Button {
-                            showSearch = true
-                        } label: {
+                        Button { showSearch = true } label: {
                             Image(systemName: "plus")
                         }
                     }
-                    .foregroundStyle(Color(hex: "#e8923a"))
+                    .foregroundStyle(Color.rrAmber)
                 }
             }
             .refreshable { await vm.load() }
@@ -54,11 +46,10 @@ struct LibraryView: View {
                     Task {
                         do {
                             try await vm.addBook(volumeId: volumeId)
+                            Haptic.success()
                         } catch APIError.bookLimitReached {
                             bookLimitAlert = true
-                        } catch {
-                            // handled in vm
-                        }
+                        } catch {}
                     }
                 }
             }
@@ -67,6 +58,7 @@ struct LibraryView: View {
                     Task {
                         do {
                             try await vm.addBook(volumeId: volumeId)
+                            Haptic.success()
                         } catch APIError.bookLimitReached {
                             bookLimitAlert = true
                         } catch {}
@@ -91,12 +83,15 @@ struct LibraryView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Now Reading")
                 .font(.subheadline.weight(.medium))
-                .foregroundStyle(Color(hex: "#7a7068"))
+                .foregroundStyle(Color.rrSecondaryLabel)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(vm.nowReading) { book in
-                        Button { selectedBook = book } label: {
+                        Button {
+                            Haptic.impact(.light)
+                            selectedBook = book
+                        } label: {
                             NowReadingCard(userBook: book)
                         }
                         .buttonStyle(.plain)
@@ -106,39 +101,31 @@ struct LibraryView: View {
         }
     }
 
-    // MARK: - Shelf tabs
+    // MARK: - Shelf section — native segmented Picker
 
     private var shelfSection: some View {
-        VStack(spacing: 0) {
-            // Tab bar
-            HStack(spacing: 0) {
-                ForEach(tabs.indices, id: \.self) { i in
-                    Button {
-                        selectedTab = i
-                    } label: {
-                        VStack(spacing: 4) {
-                            Text(tabs[i])
-                                .font(.subheadline.weight(selectedTab == i ? .semibold : .regular))
-                                .foregroundStyle(selectedTab == i ? Color(hex: "#e8923a") : Color(hex: "#7a7068"))
-                            Rectangle()
-                                .fill(selectedTab == i ? Color(hex: "#e8923a") : Color.clear)
-                                .frame(height: 2)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
+        VStack(spacing: 14) {
+            Picker("Shelf", selection: $selectedTab) {
+                Text("To Read").tag(0)
+                Text("Finished").tag(1)
+                Text("Abandoned").tag(2)
             }
-            .padding(.bottom, 12)
+            .pickerStyle(.segmented)
 
-            // Grid for selected tab
             let books = [vm.wantToRead, vm.finished, vm.abandoned][selectedTab]
 
             if books.isEmpty {
                 emptyShelf(index: selectedTab)
             } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 12) {
+                LazyVGrid(
+                    columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3),
+                    spacing: 12
+                ) {
                     ForEach(books) { book in
-                        Button { selectedBook = book } label: {
+                        Button {
+                            Haptic.impact(.light)
+                            selectedBook = book
+                        } label: {
                             ShelfCoverCard(userBook: book)
                         }
                         .buttonStyle(.plain)
@@ -158,13 +145,13 @@ struct LibraryView: View {
         return VStack(spacing: 8) {
             Image(systemName: "books.vertical")
                 .font(.largeTitle)
-                .foregroundStyle(Color(hex: "#ddd5c8"))
+                .foregroundStyle(Color.rrFill)
             Text(title)
                 .font(.subheadline.weight(.medium))
-                .foregroundStyle(Color(hex: "#7a7068"))
+                .foregroundStyle(Color.rrSecondaryLabel)
             Text(subtitle)
                 .font(.caption)
-                .foregroundStyle(Color(hex: "#7a7068"))
+                .foregroundStyle(Color.rrSecondaryLabel)
                 .multilineTextAlignment(.center)
         }
         .padding(.vertical, 48)
@@ -181,41 +168,38 @@ private struct NowReadingCard: View {
             AsyncImage(url: userBook.book.coverURL) { img in
                 img.resizable().scaledToFill()
             } placeholder: {
-                Rectangle().fill(Color(hex: "#ddd5c8"))
+                Rectangle().fill(Color.rrFill)
             }
             .frame(width: 56, height: 84)
-            .cornerRadius(6)
-            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 6))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(userBook.book.title)
                     .font(.subheadline.weight(.semibold))
                     .lineLimit(2)
-                    .foregroundStyle(Color(hex: "#1a1a2e"))
+                    .foregroundStyle(Color.rrLabel)
                 Text(userBook.book.firstAuthor)
                     .font(.caption)
-                    .foregroundStyle(Color(hex: "#7a7068"))
+                    .foregroundStyle(Color.rrSecondaryLabel)
                     .lineLimit(1)
 
                 HStack(spacing: 4) {
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(.caption)
-                    Text("Continue")
-                        .font(.caption.weight(.medium))
+                    Image(systemName: "arrow.right.circle.fill").font(.caption)
+                    Text("Continue").font(.caption.weight(.medium))
                 }
-                .foregroundStyle(Color(hex: "#e8923a"))
+                .foregroundStyle(Color.rrAmber)
                 .padding(.top, 4)
             }
         }
         .padding(12)
-        .background(Color.white)
-        .cornerRadius(14)
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(hex: "#ddd5c8"), lineWidth: 0.5))
+        .background(Color.rrCard)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.rrBorder, lineWidth: 0.5))
         .frame(width: 220)
     }
 }
 
-// MARK: - Shelf cover card (grid item)
+// MARK: - Shelf cover card
 
 private struct ShelfCoverCard: View {
     let userBook: UserBook
@@ -225,23 +209,23 @@ private struct ShelfCoverCard: View {
             AsyncImage(url: userBook.book.coverURL) { img in
                 img.resizable().scaledToFill()
             } placeholder: {
-                Rectangle().fill(Color(hex: "#ddd5c8"))
+                Rectangle()
+                    .fill(Color.rrFill)
                     .overlay(
                         Text(userBook.book.title)
                             .font(.system(size: 9))
-                            .foregroundStyle(Color(hex: "#7a7068"))
+                            .foregroundStyle(Color.rrSecondaryLabel)
                             .multilineTextAlignment(.center)
                             .padding(4)
                     )
             }
             .aspectRatio(2/3, contentMode: .fill)
-            .cornerRadius(8)
-            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 8))
 
             Text(userBook.book.title)
                 .font(.system(size: 11).weight(.medium))
                 .lineLimit(2)
-                .foregroundStyle(Color(hex: "#1a1a2e"))
+                .foregroundStyle(Color.rrLabel)
                 .multilineTextAlignment(.center)
         }
     }

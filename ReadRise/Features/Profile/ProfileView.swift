@@ -15,7 +15,7 @@ struct ProfileView: View {
                     HStack(spacing: 14) {
                         Image(systemName: "person.circle.fill")
                             .font(.system(size: 48))
-                            .foregroundStyle(Color(hex: "#e8923a"))
+                            .foregroundStyle(Color.rrAmber)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(displayName.isEmpty ? "Reader" : displayName)
                                 .font(.headline)
@@ -39,12 +39,12 @@ struct ProfileView: View {
                         }
                     }
                     .disabled(isSaving || displayName.isEmpty)
-                    .foregroundStyle(Color(hex: "#e8923a"))
+                    .foregroundStyle(Color.rrAmber)
                 }
 
                 Section {
                     Link("Manage subscription at readrise.app", destination: URL(string: "https://readrise.app/billing")!)
-                        .foregroundStyle(Color(hex: "#e8923a"))
+                        .foregroundStyle(Color.rrAmber)
                 }
 
                 Section {

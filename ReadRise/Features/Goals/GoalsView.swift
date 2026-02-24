@@ -25,7 +25,7 @@ struct GoalsView: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
             }
-            .background(Color(hex: "#faf8f4"))
+            .background(Color.rrBackground)
             .navigationTitle("Reading Goals")
             .refreshable { await vm.load() }
         }
@@ -38,9 +38,10 @@ struct GoalsView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: "target")
-                    .foregroundStyle(Color(hex: "#e8923a"))
+                    .foregroundStyle(Color.rrAmber)
                 Text("\(Calendar.current.component(.year, from: Date())) Book Goal")
                     .font(.headline)
+                    .foregroundStyle(Color.rrLabel)
             }
 
             if vm.goal != nil {
@@ -48,25 +49,23 @@ struct GoalsView: View {
                     HStack(alignment: .lastTextBaseline, spacing: 4) {
                         Text("\(vm.booksRead)")
                             .font(.custom("Georgia", size: 40).bold())
-                            .foregroundStyle(Color(hex: "#1a1a2e"))
+                            .foregroundStyle(Color.rrLabel)
                         Text("/ \(vm.goalTarget)")
                             .font(.title3)
-                            .foregroundStyle(Color(hex: "#7a7068"))
+                            .foregroundStyle(Color.rrSecondaryLabel)
                     }
                     Spacer()
                     Text("\(Int(vm.percent * 100))%")
                         .font(.title2.bold())
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                 }
 
-                ProgressView(value: vm.percent)
-                    .tint(Color(hex: "#e8923a"))
-                    .scaleEffect(x: 1, y: 2)
+                ProgressBar(value: vm.percent)
 
                 if let msg = vm.paceMessage {
                     Text(msg)
                         .font(.caption)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                 }
 
                 if vm.percent >= 1.0 {
@@ -75,32 +74,32 @@ struct GoalsView: View {
                         Text("Goal complete — you've read \(vm.booksRead) books this year!")
                     }
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(Color(hex: "#e8923a"))
+                    .foregroundStyle(Color.rrAmber)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(Color(hex: "#fef3e2"))
-                    .cornerRadius(8)
+                    .background(Color.rrAmberTint)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             } else {
                 VStack(spacing: 6) {
                     Image(systemName: "book.closed")
                         .font(.largeTitle)
-                        .foregroundStyle(Color(hex: "#ddd5c8"))
+                        .foregroundStyle(Color.rrFill)
                     Text("No goal set for \(Calendar.current.component(.year, from: Date()))")
                         .font(.subheadline.weight(.medium))
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                     Text("Set a goal below to start tracking.")
                         .font(.caption)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
             }
         }
         .padding(16)
-        .background(Color.white)
-        .cornerRadius(14)
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(hex: "#ddd5c8"), lineWidth: 0.5))
+        .background(Color.rrCard)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.rrBorder, lineWidth: 0.5))
     }
 
     // MARK: - Bar chart
@@ -110,6 +109,7 @@ struct GoalsView: View {
         return VStack(alignment: .leading, spacing: 8) {
             Text("Books finished by month")
                 .font(.subheadline.weight(.medium))
+                .foregroundStyle(Color.rrLabel)
 
             HStack(alignment: .bottom, spacing: 4) {
                 ForEach(0..<12, id: \.self) { i in
@@ -119,15 +119,15 @@ struct GoalsView: View {
                         if count > 0 {
                             Text("\(count)")
                                 .font(.system(size: 9))
-                                .foregroundStyle(Color(hex: "#7a7068"))
+                                .foregroundStyle(Color.rrSecondaryLabel)
                         }
                         Rectangle()
-                            .fill(isFuture ? Color(hex: "#ddd5c8") : (count > 0 ? Color(hex: "#e8923a") : Color(hex: "#f0ebe0")))
+                            .fill(isFuture ? Color.rrBorder : (count > 0 ? Color.rrAmber : Color.rrParchment))
                             .frame(height: max(CGFloat(count) / CGFloat(maxVal) * 60, 4))
-                            .cornerRadius(3)
+                            .clipShape(RoundedRectangle(cornerRadius: 3))
                         Text(months[i])
                             .font(.system(size: 9))
-                            .foregroundStyle(Color(hex: "#7a7068"))
+                            .foregroundStyle(Color.rrSecondaryLabel)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -135,9 +135,9 @@ struct GoalsView: View {
             .frame(height: 88)
         }
         .padding(16)
-        .background(Color.white)
-        .cornerRadius(14)
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(hex: "#ddd5c8"), lineWidth: 0.5))
+        .background(Color.rrCard)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.rrBorder, lineWidth: 0.5))
     }
 
     // MARK: - Set goal card
@@ -146,9 +146,10 @@ struct GoalsView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(vm.goal != nil ? "Update goal" : "Set a goal")
                 .font(.headline)
+                .foregroundStyle(Color.rrLabel)
             Text("How many books in \(Calendar.current.component(.year, from: Date()))?")
                 .font(.caption)
-                .foregroundStyle(Color(hex: "#7a7068"))
+                .foregroundStyle(Color.rrSecondaryLabel)
 
             if let err = vm.errorMessage {
                 Text(err).font(.caption).foregroundStyle(.red)
@@ -160,17 +161,18 @@ struct GoalsView: View {
                     .textFieldStyle(.roundedBorder)
                     .focused($targetFocused)
                 Button(vm.goal != nil ? "Update" : "Set goal") {
+                    Haptic.success()
                     Task { await vm.save() }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(hex: "#e8923a"))
+                .tint(Color.rrAmber)
                 .disabled(vm.isSaving || vm.targetText.isEmpty)
             }
         }
         .padding(16)
-        .background(Color.white)
-        .cornerRadius(14)
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(hex: "#ddd5c8"), lineWidth: 0.5))
+        .background(Color.rrCard)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.rrBorder, lineWidth: 0.5))
     }
 
     // MARK: - Presets
@@ -180,14 +182,15 @@ struct GoalsView: View {
             ForEach([12, 24, 36, 52], id: \.self) { n in
                 Button("\(n) books") {
                     vm.targetText = "\(n)"
+                    Haptic.impact(.light)
                 }
                 .font(.caption.weight(.medium))
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(vm.targetText == "\(n)" ? Color(hex: "#e8923a") : Color.white)
-                .foregroundStyle(vm.targetText == "\(n)" ? Color.white : Color(hex: "#1a1a2e"))
-                .cornerRadius(20)
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(hex: "#ddd5c8"), lineWidth: 0.5))
+                .background(vm.targetText == "\(n)" ? Color.rrAmber : Color.rrCard)
+                .foregroundStyle(vm.targetText == "\(n)" ? Color.white : Color.rrLabel)
+                .clipShape(Capsule())
+                .overlay(Capsule().stroke(Color.rrBorder, lineWidth: 0.5))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

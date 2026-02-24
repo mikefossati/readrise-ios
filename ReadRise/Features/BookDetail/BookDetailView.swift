@@ -35,55 +35,57 @@ struct BookDetailView: View {
                     .padding(.bottom, 32)
             }
         }
-        .background(Color(hex: "#faf8f4"))
+        .background(Color.rrBackground)
         .navigationBarTitleDisplayMode(.inline)
         .task { await vm.load() }
-        .alert("Error", isPresented: .constant(vm.errorMessage != nil)) {
+        .alert("Error", isPresented: Binding(
+            get: { vm.errorMessage != nil },
+            set: { if !$0 { vm.errorMessage = nil } }
+        )) {
             Button("OK") { vm.errorMessage = nil }
         } message: {
             Text(vm.errorMessage ?? "")
         }
     }
 
-    // MARK: - Book header (parchment bg)
+    // MARK: - Book header
 
     private var bookHeader: some View {
         HStack(alignment: .top, spacing: 16) {
             AsyncImage(url: vm.userBook.book.coverURL) { img in
                 img.resizable().scaledToFill()
             } placeholder: {
-                Rectangle().fill(Color(hex: "#ddd5c8"))
+                Rectangle().fill(Color.rrFill)
             }
             .frame(width: 90, height: 134)
-            .cornerRadius(8)
-            .clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 8))
             .shadow(radius: 4)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(vm.userBook.book.title)
                     .font(.custom("Georgia", size: 18).bold())
-                    .foregroundStyle(Color(hex: "#1a1a2e"))
+                    .foregroundStyle(Color.rrLabel)
                     .lineLimit(3)
 
                 if let subtitle = vm.userBook.book.subtitle {
                     Text(subtitle)
                         .font(.caption)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                         .lineLimit(2)
                 }
 
                 Text(vm.userBook.book.firstAuthor)
                     .font(.subheadline)
-                    .foregroundStyle(Color(hex: "#7a7068"))
+                    .foregroundStyle(Color.rrSecondaryLabel)
 
                 if let pages = vm.userBook.book.pageCount {
                     Text("\(pages) pages")
                         .font(.caption)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                 }
 
-                // Shelf picker
                 Button {
+                    Haptic.impact(.light)
                     showShelfPicker = true
                 } label: {
                     HStack(spacing: 4) {
@@ -94,10 +96,10 @@ struct BookDetailView: View {
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                    .background(Color.white.opacity(0.7))
-                    .cornerRadius(20)
-                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(hex: "#ddd5c8"), lineWidth: 1))
-                    .foregroundStyle(Color(hex: "#1a1a2e"))
+                    .background(Color.rrCard)
+                    .clipShape(Capsule())
+                    .overlay(Capsule().stroke(Color.rrBorder, lineWidth: 1))
+                    .foregroundStyle(Color.rrLabel)
                 }
                 .confirmationDialog("Move to shelf", isPresented: $showShelfPicker) {
                     ForEach(["reading", "want_to_read", "finished", "abandoned"], id: \.self) { shelf in
@@ -111,23 +113,28 @@ struct BookDetailView: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(hex: "#f0ebe0"))
+        .background(Color.rrParchment)
     }
 
-    // MARK: - Session card (amber tint)
+    // MARK: - Session card
 
     private var sessionCard: some View {
         VStack(spacing: 10) {
             if let active = vm.activeSession {
-                // Active session
                 HStack {
                     Image(systemName: "timer")
-                        .foregroundStyle(Color(hex: "#e8923a"))
-                    Text(TimerService.shared.activeSessionId == active.id
-                         ? TimerService.shared.formattedElapsed
-                         : "Session active")
-                        .font(.title3.bold().monospacedDigit())
-                        .foregroundStyle(Color(hex: "#1a1a2e"))
+                        .foregroundStyle(Color.rrAmber)
+                    if TimerService.shared.activeSessionId == active.id {
+                        TimelineView(.periodic(from: .now, by: 1)) { _ in
+                            Text(TimerService.shared.formattedElapsed)
+                                .font(.title3.bold().monospacedDigit())
+                                .foregroundStyle(Color.rrLabel)
+                        }
+                    } else {
+                        Text("Session active")
+                            .font(.title3.bold())
+                            .foregroundStyle(Color.rrLabel)
+                    }
                     Spacer()
                 }
 
@@ -138,37 +145,38 @@ struct BookDetailView: View {
                         .frame(width: 100)
 
                     Button {
+                        Haptic.success()
                         Task { await vm.endSession() }
                     } label: {
                         Label("End session", systemImage: "stop.fill")
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(Color(hex: "#e8923a"))
+                    .tint(Color.rrAmber)
                     .disabled(vm.isEndingSession)
                 }
             } else if vm.userBook.shelf != "abandoned" {
-                // No active session
                 HStack {
                     Image(systemName: "timer")
-                        .foregroundStyle(Color(hex: "#e8923a"))
+                        .foregroundStyle(Color.rrAmber)
                     Text("Ready to read?")
                         .font(.subheadline.weight(.medium))
-                        .foregroundStyle(Color(hex: "#1a1a2e"))
+                        .foregroundStyle(Color.rrLabel)
                     Spacer()
                     Button {
+                        Haptic.impact(.medium)
                         Task { await vm.startSession() }
                     } label: {
                         Label("Start", systemImage: "play.fill")
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(Color(hex: "#e8923a"))
+                    .tint(Color.rrAmber)
                     .disabled(vm.isStartingSession)
                 }
             }
         }
         .padding(14)
-        .background(Color(hex: "#fef3e2"))
-        .cornerRadius(14)
+        .background(Color.rrAmberTint)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
     // MARK: - Progress
@@ -180,13 +188,13 @@ struct BookDetailView: View {
                     HStack {
                         Text("Progress")
                             .font(.subheadline.weight(.medium))
+                            .foregroundStyle(Color.rrLabel)
                         Spacer()
                         Text("p. \(page) / \(total)")
                             .font(.caption)
-                            .foregroundStyle(Color(hex: "#7a7068"))
+                            .foregroundStyle(Color.rrSecondaryLabel)
                     }
-                    ProgressView(value: prog)
-                        .tint(Color(hex: "#e8923a"))
+                    ProgressBar(value: prog)
                 }
             }
 
@@ -195,10 +203,11 @@ struct BookDetailView: View {
                     .keyboardType(.numberPad)
                     .textFieldStyle(.roundedBorder)
                 Button("Log") {
+                    Haptic.impact(.light)
                     Task { await vm.saveProgress() }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(hex: "#e8923a"))
+                .tint(Color.rrAmber)
                 .disabled(vm.isSavingProgress || vm.newPageText.isEmpty)
             }
         }
@@ -210,30 +219,32 @@ struct BookDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Session history")
                 .font(.subheadline.weight(.medium))
+                .foregroundStyle(Color.rrLabel)
 
             ForEach(vm.completedSessions) { s in
                 HStack {
                     Text(s.startedAt.formatted(.dateTime.month(.abbreviated).day()))
                         .font(.caption)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                        .foregroundStyle(Color.rrSecondaryLabel)
                     Spacer()
                     Text(s.formattedDuration)
                         .font(.caption.monospacedDigit())
+                        .foregroundStyle(Color.rrLabel)
                     if let p = s.pagesRead {
                         Text("\(p) pages")
                             .font(.caption)
-                            .foregroundStyle(Color(hex: "#7a7068"))
+                            .foregroundStyle(Color.rrSecondaryLabel)
                     }
                     if let pph = s.pagesPerHour {
                         Text("\(Int(pph)) p/hr")
                             .font(.caption)
-                            .foregroundStyle(Color(hex: "#7a7068"))
+                            .foregroundStyle(Color.rrSecondaryLabel)
                     }
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 7)
-                .background(Color.white.opacity(0.6))
-                .cornerRadius(8)
+                .background(Color.rrCard)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
     }
@@ -244,33 +255,43 @@ struct BookDetailView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Rating & notes")
                 .font(.subheadline.weight(.medium))
+                .foregroundStyle(Color.rrLabel)
 
-            // Star rating
             HStack(spacing: 4) {
                 ForEach(1...5, id: \.self) { star in
-                    Image(systemName: Double(star) <= vm.reviewRating ? "star.fill" : "star")
-                        .foregroundStyle(Color(hex: "#e8923a"))
-                        .onTapGesture { vm.reviewRating = Double(star) }
+                    Button {
+                        vm.reviewRating = Double(star)
+                        Haptic.impact(.light)
+                    } label: {
+                        Image(systemName: Double(star) <= vm.reviewRating ? "star.fill" : "star")
+                            .foregroundStyle(Color.rrAmber)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("\(star) star\(star == 1 ? "" : "s")")
                 }
                 if vm.reviewRating > 0 {
-                    Button("Clear") { vm.reviewRating = 0 }
-                        .font(.caption)
-                        .foregroundStyle(Color(hex: "#7a7068"))
+                    Button("Clear") {
+                        vm.reviewRating = 0
+                        Haptic.impact(.light)
+                    }
+                    .font(.caption)
+                    .foregroundStyle(Color.rrSecondaryLabel)
                 }
             }
 
             TextEditor(text: $vm.reviewBody)
                 .frame(minHeight: 80)
                 .padding(8)
-                .background(Color.white)
-                .cornerRadius(8)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(hex: "#ddd5c8")))
+                .background(Color.rrCard)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.rrBorder))
 
             Button("Save") {
+                Haptic.success()
                 Task { await vm.saveReview() }
             }
             .buttonStyle(.borderedProminent)
-            .tint(Color(hex: "#e8923a"))
+            .tint(Color.rrAmber)
             .disabled(vm.isSavingReview)
         }
     }

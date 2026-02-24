@@ -12,7 +12,9 @@ struct APIErrorResponse: Decodable {
 
 // MARK: - Book & Library
 
-struct Book: Decodable, Identifiable, Sendable {
+struct Book: Decodable, Identifiable, Hashable, Sendable {
+    static func == (lhs: Book, rhs: Book) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
     let id: String
     let title: String
     let authors: [String]
@@ -28,7 +30,9 @@ struct Book: Decodable, Identifiable, Sendable {
     var coverURL: URL? { coverUrl.flatMap(URL.init) }
 }
 
-struct UserBook: Decodable, Identifiable, Sendable {
+struct UserBook: Decodable, Identifiable, Hashable, Sendable {
+    static func == (lhs: UserBook, rhs: UserBook) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
     let id: String
     let shelf: String
     let format: String
@@ -150,18 +154,25 @@ struct GoogleBooksVolume: Decodable, Identifiable, Sendable {
 // MARK: - JSON Decoder
 
 extension JSONDecoder {
+    nonisolated(unsafe) private static let _isoFull: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return f
+    }()
+    nonisolated(unsafe) private static let _isoBasic: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime]
+        return f
+    }()
+
     static let api: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let iso = ISO8601DateFormatter()
-        iso.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let isoBasic = ISO8601DateFormatter()
-        isoBasic.formatOptions = [.withInternetDateTime]
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let string = try container.decode(String.self)
-            if let date = iso.date(from: string) { return date }
-            if let date = isoBasic.date(from: string) { return date }
+            if let date = _isoFull.date(from: string) { return date }
+            if let date = _isoBasic.date(from: string) { return date }
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date: \(string)")
         }
         return decoder
