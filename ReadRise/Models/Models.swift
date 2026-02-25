@@ -164,6 +164,15 @@ extension JSONDecoder {
         f.formatOptions = [.withInternetDateTime]
         return f
     }()
+    // Handles PostgreSQL `date` columns (no time component) — postgres-js
+    // returns these as "YYYY-MM-DD" strings, not full ISO 8601 timestamps.
+    nonisolated(unsafe) private static let _dateOnly: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.timeZone = TimeZone(secondsFromGMT: 0)
+        return f
+    }()
 
     static let api: JSONDecoder = {
         let decoder = JSONDecoder()
@@ -173,6 +182,7 @@ extension JSONDecoder {
             let string = try container.decode(String.self)
             if let date = _isoFull.date(from: string) { return date }
             if let date = _isoBasic.date(from: string) { return date }
+            if let date = _dateOnly.date(from: string) { return date }
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date: \(string)")
         }
         return decoder
