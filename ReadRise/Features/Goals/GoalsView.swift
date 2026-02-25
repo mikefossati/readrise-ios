@@ -27,7 +27,7 @@ struct GoalsView: View {
             }
             .background(Color.rrBackground)
             .navigationTitle("Reading Goals")
-            .refreshable { await vm.load() }
+            .refreshable { await vm.load(force: true) }
         }
         .task { await vm.load() }
     }

@@ -53,7 +53,7 @@ struct LibraryView: View {
                     .foregroundStyle(Color.rrAmber)
                 }
             }
-            .refreshable { await vm.load() }
+            .refreshable { await vm.load(force: true) }
             .sheet(isPresented: $showSearch) {
                 BookSearchView { volumeId in
                     Task {

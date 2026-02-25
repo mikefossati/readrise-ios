@@ -10,16 +10,15 @@ final class LibraryViewModel {
     var isLoading = true
     var errorMessage: String?
 
-    func load() async {
+    func load(force: Bool = false) async {
         isLoading = true
         errorMessage = nil
         do {
-            let resp: APIResponse<[UserBook]> = try await APIClient.shared.get("/api/library")
-            let all = resp.data
-            nowReading = all.filter { $0.shelf == "reading" }
-            wantToRead = all.filter { $0.shelf == "want_to_read" }
-            finished   = all.filter { $0.shelf == "finished" }
-            abandoned  = all.filter { $0.shelf == "abandoned" }
+            let all = try await AppCache.shared.library(force: force)
+            nowReading  = all.filter { $0.shelf == "reading" }
+            wantToRead  = all.filter { $0.shelf == "want_to_read" }
+            finished    = all.filter { $0.shelf == "finished" }
+            abandoned   = all.filter { $0.shelf == "abandoned" }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -36,6 +35,8 @@ final class LibraryViewModel {
             "/api/library",
             body: AddBody(volumeId: volumeId, shelf: shelf, format: "physical")
         )
-        await load()
+        await AppCache.shared.invalidateLibrary()
+        await AppCache.shared.invalidateStats()
+        await load(force: true)
     }
 }

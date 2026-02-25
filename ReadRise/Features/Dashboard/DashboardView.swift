@@ -37,7 +37,7 @@ struct DashboardView: View {
             }
             .background(Color.rrBackground)
             .toolbar(.hidden, for: .navigationBar)
-            .refreshable { await vm.load() }
+            .refreshable { await vm.load(force: true) }
             .navigationDestination(item: $selectedBook) { book in
                 BookDetailView(userBook: book)
             }

@@ -12,19 +12,16 @@ final class GoalsViewModel {
 
     private let year = Calendar.current.component(.year, from: Date())
 
-    func load() async {
+    func load(force: Bool = false) async {
         isLoading = true
         errorMessage = nil
         do {
-            async let goalsResp: APIResponse<[Goal]> = APIClient.shared.get(
-                "/api/goals",
-                queryItems: [URLQueryItem(name: "year", value: "\(year)")]
-            )
-            async let statsResp: APIResponse<Stats> = APIClient.shared.get("/api/stats")
+            async let goalsResult = AppCache.shared.goals(year: year, force: force)
+            async let statsResult = AppCache.shared.stats(force: force)
 
-            let (g, s) = try await (goalsResp, statsResp)
-            goal = g.data.first { $0.goalType == "book_count" }
-            stats = s.data
+            let (g, s) = try await (goalsResult, statsResult)
+            goal = g.first { $0.goalType == "book_count" }
+            stats = s
             targetText = goal.map { "\($0.target)" } ?? ""
         } catch {
             errorMessage = error.localizedDescription
@@ -46,6 +43,8 @@ final class GoalsViewModel {
                 body: GoalBody(year: year, goalType: "book_count", target: target)
             )
             goal = resp.data
+            await AppCache.shared.invalidateGoals()
+            await AppCache.shared.invalidateStats()
         } catch {
             errorMessage = error.localizedDescription
         }

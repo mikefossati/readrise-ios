@@ -12,26 +12,20 @@ final class DashboardViewModel {
 
     private let year = Calendar.current.component(.year, from: Date())
 
-    func load() async {
+    func load(force: Bool = false) async {
         isLoading = true
         errorMessage = nil
         do {
-            async let statsResult: APIResponse<Stats> = APIClient.shared.get("/api/stats")
-            async let readingResult: APIResponse<[UserBook]> = APIClient.shared.get(
-                "/api/library",
-                queryItems: [URLQueryItem(name: "shelf", value: "reading")]
-            )
-            async let goalsResult: APIResponse<[Goal]> = APIClient.shared.get(
-                "/api/goals",
-                queryItems: [URLQueryItem(name: "year", value: "\(year)")]
-            )
+            async let statsResult = AppCache.shared.stats(force: force)
+            async let goalsResult = AppCache.shared.goals(year: year, force: force)
+            async let libraryResult = AppCache.shared.library(force: force)
 
-            let (statsResp, readingResp, goalsResp) = try await (statsResult, readingResult, goalsResult)
-            stats = statsResp.data
-            currentlyReading = readingResp.data
-            goal = goalsResp.data.first { $0.goalType == "book_count" }
+            let (s, goals, allBooks) = try await (statsResult, goalsResult, libraryResult)
+            stats = s
+            goal = goals.first { $0.goalType == "book_count" }
+            currentlyReading = allBooks.filter { $0.shelf == "reading" }
 
-            if let firstBook = readingResp.data.first {
+            if let firstBook = currentlyReading.first {
                 let sessResp: APIResponse<[ReadingSession]> = try await APIClient.shared.get(
                     "/api/library/\(firstBook.id)/sessions"
                 )
