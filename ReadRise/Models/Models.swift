@@ -143,7 +143,11 @@ struct GoogleBooksVolume: Decodable, Identifiable, Sendable {
 
         struct ImageLinks: Decodable, Sendable {
             let thumbnail: String?
-            var thumbnailURL: URL? { thumbnail.flatMap(URL.init) }
+            var thumbnailURL: URL? {
+                thumbnail
+                    .map { $0.replacingOccurrences(of: "http://", with: "https://") }
+                    .flatMap(URL.init)
+            }
         }
     }
 
