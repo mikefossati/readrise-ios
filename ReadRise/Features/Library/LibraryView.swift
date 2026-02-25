@@ -15,6 +15,19 @@ struct LibraryView: View {
                     if vm.isLoading {
                         ProgressView().padding(.top, 40)
                     } else {
+                        if let error = vm.errorMessage {
+                            HStack(spacing: 8) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundStyle(.red)
+                                Text(error)
+                                    .font(.caption)
+                                    .foregroundStyle(Color.rrSecondaryLabel)
+                            }
+                            .padding(12)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color.red.opacity(0.08))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
                         if !vm.nowReading.isEmpty {
                             nowReadingBand
                         }
