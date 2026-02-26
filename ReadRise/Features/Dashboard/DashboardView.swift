@@ -85,7 +85,7 @@ struct DashboardView: View {
 
     private var goalSection: some View {
         GoalCard(
-            year: year,
+            year: String(year),
             booksRead: vm.stats?.booksReadThisYear ?? 0,
             goalTarget: vm.goalTarget,
             goalPercent: vm.goalPercent,
@@ -157,7 +157,7 @@ struct DashboardView: View {
 // MARK: - GoalCard
 
 private struct GoalCard: View {
-    let year: Int
+    let year: String
     let booksRead: Int
     let goalTarget: Int
     let goalPercent: Double

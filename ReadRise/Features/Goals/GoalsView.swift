@@ -6,6 +6,7 @@ struct GoalsView: View {
 
     private let months = ["J","F","M","A","M","J","J","A","S","O","N","D"]
     private let currentMonth = Calendar.current.component(.month, from: Date())
+    private let yearStr = String(Calendar.current.component(.year, from: Date()))
 
     var body: some View {
         NavigationStack {
@@ -39,7 +40,7 @@ struct GoalsView: View {
             HStack {
                 Image(systemName: "target")
                     .foregroundStyle(Color.rrAmber)
-                Text("\(Calendar.current.component(.year, from: Date())) Book Goal")
+                Text("\(yearStr) Book Goal")
                     .font(.headline)
                     .foregroundStyle(Color.rrLabel)
             }
@@ -85,7 +86,7 @@ struct GoalsView: View {
                     Image(systemName: "book.closed")
                         .font(.largeTitle)
                         .foregroundStyle(Color.rrFill)
-                    Text("No goal set for \(Calendar.current.component(.year, from: Date()))")
+                    Text("No goal set for \(yearStr)")
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.rrSecondaryLabel)
                     Text("Set a goal below to start tracking.")
@@ -147,7 +148,7 @@ struct GoalsView: View {
             Text(vm.goal != nil ? "Update goal" : "Set a goal")
                 .font(.headline)
                 .foregroundStyle(Color.rrLabel)
-            Text("How many books in \(Calendar.current.component(.year, from: Date()))?")
+            Text("How many books in \(yearStr)?")
                 .font(.caption)
                 .foregroundStyle(Color.rrSecondaryLabel)
 
