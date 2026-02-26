@@ -104,6 +104,7 @@ struct ProgressBar: View {
 
 // MARK: - Haptics
 
+@MainActor
 enum Haptic {
     static func impact(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .medium) {
         UIImpactFeedbackGenerator(style: style).impactOccurred()

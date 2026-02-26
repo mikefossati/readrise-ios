@@ -170,7 +170,7 @@ extension JSONDecoder {
     }()
     // Handles PostgreSQL `date` columns (no time component) — postgres-js
     // returns these as "YYYY-MM-DD" strings, not full ISO 8601 timestamps.
-    nonisolated(unsafe) private static let _dateOnly: DateFormatter = {
+    private static let _dateOnly: DateFormatter = {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
         f.locale = Locale(identifier: "en_US_POSIX")
