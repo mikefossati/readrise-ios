@@ -6,9 +6,7 @@ struct RootView: View {
     var body: some View {
         Group {
             if auth.isLoading {
-                Color.rrBackground
-                    .ignoresSafeArea()
-                    .overlay(ProgressView().tint(Color.rrAmber))
+                SplashView()
             } else if auth.isAuthenticated {
                 MainTabView()
             } else {
