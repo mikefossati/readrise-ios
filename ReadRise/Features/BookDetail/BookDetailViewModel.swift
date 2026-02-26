@@ -147,6 +147,7 @@ final class BookDetailViewModel {
     // MARK: - Review
 
     func saveReview() async {
+        guard reviewRating >= 1 else { return }
         isSavingReview = true
         do {
             struct ReviewBody: Encodable { let rating: Double; let body: String? }

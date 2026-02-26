@@ -292,7 +292,7 @@ struct BookDetailView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.rrAmber)
-            .disabled(vm.isSavingReview)
+            .disabled(vm.isSavingReview || vm.reviewRating == 0)
         }
     }
 }
