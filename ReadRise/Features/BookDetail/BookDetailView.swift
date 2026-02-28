@@ -296,6 +296,11 @@ struct BookDetailView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.rrBorder))
 
+            Text("\(vm.reviewBody.count) / 1000")
+                .font(.caption2)
+                .foregroundStyle(vm.reviewBody.count > 1000 ? .red : Color.rrSecondaryLabel)
+                .frame(maxWidth: .infinity, alignment: .trailing)
+
             Button("Save") {
                 Haptic.success()
                 Task { await vm.saveReview() }

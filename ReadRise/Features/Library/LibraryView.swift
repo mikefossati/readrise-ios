@@ -45,11 +45,15 @@ struct LibraryView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 14) {
-                        Button { showBarcode = true } label: {
-                            Image(systemName: "barcode.viewfinder")
-                        }
-                        Button { showSearch = true } label: {
-                            Image(systemName: "plus")
+                        if vm.isAddingBook {
+                            ProgressView().tint(Color.rrAmber)
+                        } else {
+                            Button { showBarcode = true } label: {
+                                Image(systemName: "barcode.viewfinder")
+                            }
+                            Button { showSearch = true } label: {
+                                Image(systemName: "plus")
+                            }
                         }
                     }
                     .foregroundStyle(Color.rrAmber)

@@ -8,6 +8,7 @@ final class LibraryViewModel {
     var finished: [UserBook] = []
     var abandoned: [UserBook] = []
     var isLoading = true
+    var isAddingBook = false
     var errorMessage: String?
 
     func load(force: Bool = false) async {
@@ -26,6 +27,8 @@ final class LibraryViewModel {
     }
 
     func addBook(volumeId: String, shelf: String = "reading") async throws {
+        isAddingBook = true
+        defer { isAddingBook = false }
         struct AddBody: Encodable {
             let volumeId: String
             let shelf: String

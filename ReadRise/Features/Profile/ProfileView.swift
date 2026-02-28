@@ -9,6 +9,7 @@ struct ProfileView: View {
     @State private var isLoading = true
     @State private var showSignOutConfirm = false
     @State private var errorMessage: String?
+    @State private var showSaveSuccess = false
 
     var body: some View {
         NavigationStack {
@@ -80,6 +81,22 @@ struct ProfileView: View {
             .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Profile")
             .task { await loadProfile() }
+            .safeAreaInset(edge: .top) {
+                if showSaveSuccess {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.circle.fill")
+                        Text("Name saved")
+                    }
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Color.rrAmber)
+                    .clipShape(Capsule())
+                    .padding(.top, 4)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+                }
+            }
             .confirmationDialog("Sign out?", isPresented: $showSignOutConfirm, titleVisibility: .visible) {
                 Button("Sign out", role: .destructive) {
                     Task { await auth.signOut() }
@@ -110,6 +127,9 @@ struct ProfileView: View {
                 "/api/user/profile",
                 body: NameBody(displayName: displayName)
             )
+            withAnimation { showSaveSuccess = true }
+            try? await Task.sleep(for: .seconds(2))
+            withAnimation { showSaveSuccess = false }
         } catch {
             errorMessage = error.localizedDescription
         }
