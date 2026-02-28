@@ -104,7 +104,8 @@ final class TimerService {
             guard let self, self.isRunning, let sessionId = self.activeSessionId else { return }
             Task {
                 struct StopBody: Encodable { let sessionId: String }
-                try? await APIClient.shared.put("/api/timer/stop", body: StopBody(sessionId: sessionId))
+                struct Empty: Decodable {}
+                let _: Empty? = try? await APIClient.shared.put("/api/timer/stop", body: StopBody(sessionId: sessionId))
                 await MainActor.run { self.stop() }
             }
         }

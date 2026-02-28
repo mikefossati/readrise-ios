@@ -106,7 +106,7 @@ struct Stats: Codable, Sendable {
     let streak: StreakData
 }
 
-struct StreakData: Decodable, Sendable {
+struct StreakData: Codable, Sendable {
     let currentStreak: Int
     let longestStreak: Int
     let lastActiveDate: String?
