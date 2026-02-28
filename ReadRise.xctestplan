@@ -1,0 +1,36 @@
+{
+  "configurations" : [
+    {
+      "id" : "EE14E2DA-F46A-4C5C-BEE4-22D27CCDFCF7",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ReadRise.xcodeproj",
+      "identifier" : "0B519B15019015B96F25DAD5",
+      "name" : "ReadRise"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:ReadRise.xcodeproj",
+        "identifier" : "5540814AFCA6A6B1064F02B3",
+        "name" : "ReadRiseTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:ReadRise.xcodeproj",
+        "identifier" : "T10000000000000000000001",
+        "name" : "ReadRiseUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
