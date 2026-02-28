@@ -57,7 +57,8 @@ final class ProfileUITests: BaseUITest {
 
     func testSignOutCancelStaysOnProfile() {
         app.buttons["profile.signOut"].tap()
-        app.buttons["Cancel"].tap()
+        XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 3))
+        tapCancel()
         XCTAssertTrue(app.navigationBars["Profile"].waitForExistence(timeout: 3))
     }
 }

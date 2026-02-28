@@ -104,6 +104,7 @@ struct DashboardView: View {
             goalPercent: vm.goalPercent,
             paceMessage: vm.paceMessage
         )
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("dashboard.goalCard")
     }
 
@@ -150,6 +151,7 @@ struct DashboardView: View {
         .background(streak > 0 ? Color.rrAmberTint : Color.rrCard)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.rrBorder, lineWidth: 0.5))
+        .accessibilityElement(children: .combine)
         .accessibilityIdentifier("dashboard.streakBadge")
     }
 

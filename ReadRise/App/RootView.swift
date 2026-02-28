@@ -11,11 +11,22 @@ struct RootView: View {
         #endif
     }
 
+    private var isShowingAuth: Bool {
+        #if DEBUG
+        ProcessInfo.processInfo.arguments.contains("--show-auth")
+        #else
+        false
+        #endif
+    }
+
     var body: some View {
         Group {
             if isUITesting {
                 // Bypass auth entirely so UI tests start on MainTabView
                 MainTabView()
+            } else if isShowingAuth {
+                // Force AuthView regardless of session — used by AuthUITests
+                AuthView()
             } else if auth.isLoading {
                 SplashView()
             } else if auth.isAuthenticated {

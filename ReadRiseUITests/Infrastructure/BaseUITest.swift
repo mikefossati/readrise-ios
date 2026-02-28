@@ -28,4 +28,19 @@ class BaseUITest: XCTestCase {
     func tapTab(_ label: String) {
         app.tabBars.firstMatch.buttons[label].tap()
     }
+
+    /// Tap the "Cancel" button inside the frontmost action sheet.
+    ///
+    /// SwiftUI's `.confirmationDialog` Cancel has automation type 42 ("link") on
+    /// iOS 16+, so it is invisible to `app.buttons["Cancel"]`. Searching the full
+    /// descendant tree by label finds it regardless of element type.
+    func tapCancel() {
+        let sheet = app.sheets.firstMatch
+        _ = sheet.waitForExistence(timeout: 3)
+        let cancel = app.descendants(matching: .any)
+            .matching(NSPredicate(format: "label == 'Cancel'"))
+            .firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 3), "Cancel button not found")
+        cancel.tap()
+    }
 }

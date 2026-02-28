@@ -40,7 +40,9 @@ final class GoalsUITests: BaseUITest {
 
     func testSaveGoalButtonDisabledWhenEmpty() {
         let field = app.textFields["goals.targetField"]
-        waitFor(field)
+        waitFor(field).tap()
+        // Fixture pre-populates the field with the existing goal target; clear it first
+        field.clearAndEnterText("")
         XCTAssertFalse(app.buttons["goals.saveGoal"].isEnabled)
     }
 
