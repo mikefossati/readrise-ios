@@ -441,7 +441,12 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					5540814AFCA6A6B1064F02B3 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 0B519B15019015B96F25DAD5;
+					};
 					T10000000000000000000001 = {
+						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 0B519B15019015B96F25DAD5;
 					};
 				};
