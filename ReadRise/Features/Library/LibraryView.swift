@@ -78,8 +78,9 @@ struct LibraryView: View {
                 BarcodeScanView { volumeId in
                     Task {
                         do {
-                            try await vm.addBook(volumeId: volumeId)
+                            let book = try await vm.addBook(volumeId: volumeId)
                             Haptic.success()
+                            selectedBook = book
                         } catch APIError.bookLimitReached {
                             bookLimitAlert = true
                         } catch {

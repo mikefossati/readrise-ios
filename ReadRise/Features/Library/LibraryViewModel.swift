@@ -26,7 +26,8 @@ final class LibraryViewModel {
         isLoading = false
     }
 
-    func addBook(volumeId: String, shelf: String = "reading") async throws {
+    @discardableResult
+    func addBook(volumeId: String, shelf: String = "reading") async throws -> UserBook {
         isAddingBook = true
         defer { isAddingBook = false }
         struct AddBody: Encodable {
@@ -34,12 +35,13 @@ final class LibraryViewModel {
             let shelf: String
             let format: String
         }
-        let _: APIResponse<UserBook> = try await APIClient.shared.post(
+        let resp: APIResponse<UserBook> = try await APIClient.shared.post(
             "/api/library",
             body: AddBody(volumeId: volumeId, shelf: shelf, format: "physical")
         )
         await AppCache.shared.invalidateLibrary()
         await AppCache.shared.invalidateStats()
         await load(force: true)
+        return resp.data
     }
 }

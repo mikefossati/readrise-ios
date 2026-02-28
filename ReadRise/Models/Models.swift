@@ -27,7 +27,11 @@ struct Book: Codable, Identifiable, Hashable, Sendable {
     let language: String?
 
     var firstAuthor: String { authors.first ?? "" }
-    var coverURL: URL? { coverUrl.flatMap(URL.init) }
+    var coverURL: URL? {
+        coverUrl
+            .map { $0.replacingOccurrences(of: "http://", with: "https://") }
+            .flatMap(URL.init)
+    }
 }
 
 struct UserBook: Codable, Identifiable, Hashable, Sendable {
