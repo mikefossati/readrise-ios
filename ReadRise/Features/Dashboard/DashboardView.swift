@@ -44,10 +44,15 @@ struct DashboardView: View {
             }
         }
         .task { await vm.load() }
-        .onAppear {
-            // Re-check on every tab switch; .task only runs on first appear.
-            // Skip on first appear (stats == nil) to avoid double-fetching.
-            if vm.stats != nil { Task { await vm.load() } }
+        .onReceive(NotificationCenter.default.publisher(for: .rrDashboardRefresh)) { _ in
+            // Fires every time the Dashboard tab is selected. Skip on first
+            // load (stats == nil) to avoid double-fetching with .task above.
+            guard vm.stats != nil else { return }
+            Task { await vm.load() }
+        }
+        .onChange(of: selectedBook) { old, new in
+            // Reload after returning from BookDetail (e.g. after deleting a book).
+            if old != nil && new == nil { Task { await vm.load(force: true) } }
         }
     }
 

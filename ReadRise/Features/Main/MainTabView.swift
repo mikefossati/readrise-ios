@@ -32,6 +32,11 @@ struct MainTabView: View {
                     .tag(3)
             }
             .tint(Color.rrAmber)
+            .onChange(of: selectedTab) { _, newTab in
+                if newTab == 0 {
+                    NotificationCenter.default.post(name: .rrDashboardRefresh, object: nil)
+                }
+            }
 
             if !network.isConnected {
                 HStack(spacing: 6) {
@@ -49,4 +54,8 @@ struct MainTabView: View {
             }
         }
     }
+}
+
+extension Notification.Name {
+    static let rrDashboardRefresh = Notification.Name("rrDashboardRefresh")
 }
