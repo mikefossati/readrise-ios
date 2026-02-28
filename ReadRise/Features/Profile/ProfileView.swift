@@ -41,6 +41,7 @@ struct ProfileView: View {
 
                 Section("Display name") {
                     TextField("Your name", text: $displayName)
+                        .onSubmit { Task { await saveName() } }
                     Button {
                         Task { await saveName() }
                     } label: {
@@ -76,6 +77,7 @@ struct ProfileView: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Profile")
             .task { await loadProfile() }
             .confirmationDialog("Sign out?", isPresented: $showSignOutConfirm, titleVisibility: .visible) {

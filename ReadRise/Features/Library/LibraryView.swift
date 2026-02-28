@@ -8,6 +8,7 @@ struct LibraryView: View {
     @State private var showBarcode = false
     @State private var selectedBook: UserBook?
     @State private var bookLimitAlert = false
+    @State private var addBookError: String?
 
     var body: some View {
         NavigationStack {
@@ -63,7 +64,9 @@ struct LibraryView: View {
                             Haptic.success()
                         } catch APIError.bookLimitReached {
                             bookLimitAlert = true
-                        } catch {}
+                        } catch {
+                            addBookError = error.localizedDescription
+                        }
                     }
                 }
             }
@@ -75,7 +78,9 @@ struct LibraryView: View {
                             Haptic.success()
                         } catch APIError.bookLimitReached {
                             bookLimitAlert = true
-                        } catch {}
+                        } catch {
+                            addBookError = error.localizedDescription
+                        }
                     }
                 }
             }
@@ -86,6 +91,14 @@ struct LibraryView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text("You've reached the 50-book limit on the Free plan. Visit readrise.app to upgrade.")
+            }
+            .alert("Couldn't Add Book", isPresented: Binding(
+                get: { addBookError != nil },
+                set: { if !$0 { addBookError = nil } }
+            )) {
+                Button("OK") { addBookError = nil }
+            } message: {
+                Text(addBookError ?? "")
             }
         }
         .task { await vm.load() }

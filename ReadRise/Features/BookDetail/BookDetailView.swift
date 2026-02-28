@@ -5,6 +5,7 @@ struct BookDetailView: View {
     @State var vm: BookDetailViewModel
     @State private var showShelfPicker = false
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var focusedField: Bool
 
     init(userBook: UserBook) {
         _vm = State(initialValue: BookDetailViewModel(userBook: userBook))
@@ -36,9 +37,16 @@ struct BookDetailView: View {
                     .padding(.bottom, 32)
             }
         }
+        .scrollDismissesKeyboard(.immediately)
         .background(Color.rrBackground)
         .navigationBarTitleDisplayMode(.inline)
         .task { await vm.load() }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("Done") { focusedField = false }
+            }
+        }
         .alert("Error", isPresented: Binding(
             get: { vm.errorMessage != nil },
             set: { if !$0 { vm.errorMessage = nil } }
@@ -143,6 +151,7 @@ struct BookDetailView: View {
                         .keyboardType(.numberPad)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 100)
+                        .focused($focusedField)
 
                     Button {
                         Haptic.success()
@@ -202,6 +211,7 @@ struct BookDetailView: View {
                 TextField("Current page", text: $vm.newPageText)
                     .keyboardType(.numberPad)
                     .textFieldStyle(.roundedBorder)
+                    .focused($focusedField)
                 Button("Log") {
                     Haptic.impact(.light)
                     Task { await vm.saveProgress() }

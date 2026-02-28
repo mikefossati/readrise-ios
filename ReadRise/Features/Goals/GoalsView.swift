@@ -26,9 +26,16 @@ struct GoalsView: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
             }
+            .scrollDismissesKeyboard(.immediately)
             .background(Color.rrBackground)
             .navigationTitle("Reading Goals")
             .refreshable { await vm.load(force: true) }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") { targetFocused = false }
+                }
+            }
         }
         .task { await vm.load() }
     }
