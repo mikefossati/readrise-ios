@@ -44,6 +44,11 @@ struct DashboardView: View {
             }
         }
         .task { await vm.load() }
+        .onAppear {
+            // Re-check on every tab switch; .task only runs on first appear.
+            // Skip on first appear (stats == nil) to avoid double-fetching.
+            if vm.stats != nil { Task { await vm.load() } }
+        }
     }
 
     // MARK: - Header
