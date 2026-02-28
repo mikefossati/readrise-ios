@@ -168,6 +168,7 @@ struct GoalsView: View {
                     .keyboardType(.numberPad)
                     .textFieldStyle(.roundedBorder)
                     .focused($targetFocused)
+                    .accessibilityIdentifier("goals.targetField")
                 Button(vm.goal != nil ? "Update" : "Set goal") {
                     Haptic.success()
                     Task { await vm.save() }
@@ -175,6 +176,7 @@ struct GoalsView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(Color.rrAmber)
                 .disabled(vm.isSaving || vm.targetText.isEmpty)
+                .accessibilityIdentifier("goals.saveGoal")
             }
         }
         .padding(16)

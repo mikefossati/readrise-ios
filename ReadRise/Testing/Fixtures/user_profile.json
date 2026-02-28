@@ -1,0 +1,9 @@
+{
+  "data": {
+    "id": "user-001",
+    "display_name": "Test Reader",
+    "avatar_url": null,
+    "subscription_tier": "free",
+    "subscription_status": "active"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "id": "goal-001",
+      "year": 2026,
+      "goal_type": "book_count",
+      "target": 24,
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  ]
+}

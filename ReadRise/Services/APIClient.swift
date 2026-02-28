@@ -29,6 +29,11 @@ final class APIClient: Sendable {
     private let session: URLSession = {
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 30
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--uitesting") {
+            config.protocolClasses = [MockURLProtocol.self]
+        }
+        #endif
         return URLSession(configuration: config)
     }()
 
@@ -40,12 +45,22 @@ final class APIClient: Sendable {
         body: (any Encodable)? = nil,
         queryItems: [URLQueryItem] = []
     ) async throws -> URLRequest {
-        let supabase = SupabaseManager.shared.client
+        #if DEBUG
+        let isUITesting = ProcessInfo.processInfo.arguments.contains("--uitesting")
+        #else
+        let isUITesting = false
+        #endif
+
         let accessToken: String
-        do {
-            accessToken = try await supabase.auth.session.accessToken
-        } catch {
-            throw APIError.notAuthenticated
+        if isUITesting {
+            accessToken = "test-token"
+        } else {
+            let supabase = SupabaseManager.shared.client
+            do {
+                accessToken = try await supabase.auth.session.accessToken
+            } catch {
+                throw APIError.notAuthenticated
+            }
         }
 
         var components = URLComponents(url: AppConfig.effectiveBaseURL, resolvingAgainstBaseURL: false)!

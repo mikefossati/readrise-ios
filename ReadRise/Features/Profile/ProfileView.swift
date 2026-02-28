@@ -43,6 +43,7 @@ struct ProfileView: View {
                 Section("Display name") {
                     TextField("Your name", text: $displayName)
                         .onSubmit { Task { await saveName() } }
+                        .accessibilityIdentifier("profile.nameField")
                     Button {
                         Task { await saveName() }
                     } label: {
@@ -54,6 +55,7 @@ struct ProfileView: View {
                     }
                     .disabled(isSaving || displayName.isEmpty)
                     .foregroundStyle(Color.rrAmber)
+                    .accessibilityIdentifier("profile.saveName")
                 }
 
                 Section {
@@ -70,6 +72,7 @@ struct ProfileView: View {
                             Text("Sign out")
                         }
                     }
+                    .accessibilityIdentifier("profile.signOut")
                 }
 
                 if let err = errorMessage {

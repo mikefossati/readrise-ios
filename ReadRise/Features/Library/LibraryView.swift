@@ -51,9 +51,11 @@ struct LibraryView: View {
                             Button { showBarcode = true } label: {
                                 Image(systemName: "barcode.viewfinder")
                             }
+                            .accessibilityIdentifier("library.barcodeButton")
                             Button { showSearch = true } label: {
                                 Image(systemName: "plus")
                             }
+                            .accessibilityIdentifier("library.addBook")
                         }
                     }
                     .foregroundStyle(Color.rrAmber)
@@ -130,6 +132,7 @@ struct LibraryView: View {
                             NowReadingCard(userBook: book)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("library.book.\(book.id)")
                         .contextMenu {
                             Button(role: .destructive) {
                                 Task { await vm.deleteBook(userBookId: book.id) }
@@ -153,6 +156,7 @@ struct LibraryView: View {
                 Text("Abandoned").tag(2)
             }
             .pickerStyle(.segmented)
+            .accessibilityIdentifier("library.shelfPicker")
 
             let books = [vm.wantToRead, vm.finished, vm.abandoned][selectedTab]
 
@@ -171,6 +175,7 @@ struct LibraryView: View {
                             ShelfCoverCard(userBook: book)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("library.book.\(book.id)")
                         .contextMenu {
                             Button(role: .destructive) {
                                 Task { await vm.deleteBook(userBookId: book.id) }

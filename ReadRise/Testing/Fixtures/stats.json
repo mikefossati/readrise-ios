@@ -1,0 +1,15 @@
+{
+  "data": {
+    "books_read_this_year": 7,
+    "total_pages_all_time": 2341,
+    "total_pages_this_year": 1205,
+    "total_hours_all_time": 42,
+    "average_pages_per_hour": 55,
+    "books_per_month": [1, 1, 2, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+    "streak": {
+      "current_streak": 3,
+      "longest_streak": 14,
+      "last_active_date": "2026-02-28"
+    }
+  }
+}

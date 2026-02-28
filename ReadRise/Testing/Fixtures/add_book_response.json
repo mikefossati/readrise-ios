@@ -1,0 +1,24 @@
+{
+  "data": {
+    "id": "ub-new-001",
+    "shelf": "reading",
+    "format": "physical",
+    "book_id": "b-new-001",
+    "updated_at": "2026-02-28T10:00:00Z",
+    "started_at": "2026-02-28T10:00:00Z",
+    "finished_at": null,
+    "abandoned_at": null,
+    "book": {
+      "id": "b-new-001",
+      "title": "Atomic Habits",
+      "authors": ["James Clear"],
+      "cover_url": "https://books.google.com/books/content?id=testnew&printsec=frontcover&img=1&zoom=1",
+      "page_count": 320,
+      "genres": ["Self-Help"],
+      "subtitle": "An Easy & Proven Way to Build Good Habits & Break Bad Ones",
+      "publisher": "Avery",
+      "published_date": "2018",
+      "language": "en"
+    }
+  }
+}

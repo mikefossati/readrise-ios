@@ -37,6 +37,7 @@ struct BookSearchView: View {
             .listStyle(.plain)
             .searchable(text: $vm.query, prompt: "Search by title or author")
             .onChange(of: vm.query) { vm.search() }
+            .accessibilityIdentifier("bookSearch.list")
             .navigationTitle("Add a Book")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -83,6 +84,7 @@ private struct BookSearchResultRow: View {
                     .foregroundStyle(isAdded ? Color.green : Color(hex: "#e8923a"))
             }
             .disabled(isAdded)
+            .accessibilityIdentifier("bookSearch.add.\(volume.id)")
         }
         .padding(.vertical, 4)
     }

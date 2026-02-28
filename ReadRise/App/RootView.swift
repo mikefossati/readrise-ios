@@ -3,9 +3,20 @@ import SwiftUI
 struct RootView: View {
     @Environment(AuthService.self) private var auth: AuthService
 
+    private var isUITesting: Bool {
+        #if DEBUG
+        ProcessInfo.processInfo.arguments.contains("--uitesting")
+        #else
+        false
+        #endif
+    }
+
     var body: some View {
         Group {
-            if auth.isLoading {
+            if isUITesting {
+                // Bypass auth entirely so UI tests start on MainTabView
+                MainTabView()
+            } else if auth.isLoading {
                 SplashView()
             } else if auth.isAuthenticated {
                 MainTabView()

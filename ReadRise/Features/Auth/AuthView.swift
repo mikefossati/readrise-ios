@@ -59,6 +59,7 @@ struct AuthView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
                     .disabled(isLoading)
+                    .accessibilityIdentifier("auth.signInApple")
 
                     Button {
                         Task {
@@ -80,6 +81,7 @@ struct AuthView: View {
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.rrBorder, lineWidth: 1))
                     }
                     .disabled(isLoading)
+                    .accessibilityIdentifier("auth.signInGoogle")
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 48)

@@ -55,6 +55,7 @@ struct BookDetailView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 32)
                 .disabled(vm.isDeletingBook)
+                .accessibilityIdentifier("bookDetail.deleteBook")
                 .confirmationDialog(
                     "Remove \"\(vm.userBook.book.title)\" from your library?",
                     isPresented: $showDeleteConfirm,
@@ -185,6 +186,7 @@ struct BookDetailView: View {
                         .textFieldStyle(.roundedBorder)
                         .frame(width: 100)
                         .focused($focusedField)
+                        .accessibilityIdentifier("bookDetail.endPageField")
 
                     Button {
                         Haptic.success()
@@ -195,6 +197,7 @@ struct BookDetailView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(Color.rrAmber)
                     .disabled(vm.isEndingSession)
+                    .accessibilityIdentifier("bookDetail.endSession")
                 }
             } else if vm.userBook.shelf != "abandoned" {
                 HStack {
@@ -213,6 +216,7 @@ struct BookDetailView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(Color.rrAmber)
                     .disabled(vm.isStartingSession)
+                    .accessibilityIdentifier("bookDetail.startSession")
                 }
             }
         }
@@ -245,6 +249,7 @@ struct BookDetailView: View {
                     .keyboardType(.numberPad)
                     .textFieldStyle(.roundedBorder)
                     .focused($focusedField)
+                    .accessibilityIdentifier("bookDetail.progressField")
                 Button("Log") {
                     Haptic.impact(.light)
                     Task { await vm.saveProgress() }
@@ -252,6 +257,7 @@ struct BookDetailView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(Color.rrAmber)
                 .disabled(vm.isSavingProgress || vm.newPageText.isEmpty)
+                .accessibilityIdentifier("bookDetail.logProgress")
             }
         }
     }
@@ -328,6 +334,7 @@ struct BookDetailView: View {
                 .background(Color.rrCard)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.rrBorder))
+                .accessibilityIdentifier("bookDetail.reviewBody")
 
             Text("\(vm.reviewBody.count) / 1000")
                 .font(.caption2)
@@ -341,6 +348,7 @@ struct BookDetailView: View {
             .buttonStyle(.borderedProminent)
             .tint(Color.rrAmber)
             .disabled(vm.isSavingReview || vm.reviewRating == 0)
+            .accessibilityIdentifier("bookDetail.saveReview")
         }
     }
 }

@@ -36,10 +36,40 @@
 		F4DE243330926D3ECB733D45 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB52D42D13C26EA2652FCA /* Models.swift */; };
 		FCB50471D30088A76ED8AC88 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F76EC5196782CA8BE5320EB2 /* LibraryView.swift */; };
 		FE22EF8CFAA2CB2177CA347A /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C5C3FA25EA2B3F5A276633 /* DashboardViewModel.swift */; };
+		/* MockURLProtocol + fixtures in app target */
+		B10000000000000000000001 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000001 /* MockURLProtocol.swift */; };
+		B10000000000000000000002 /* stats.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000002 /* stats.json */; };
+		B10000000000000000000003 /* library.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000003 /* library.json */; };
+		B10000000000000000000004 /* goals.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000004 /* goals.json */; };
+		B10000000000000000000005 /* goal_created.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000005 /* goal_created.json */; };
+		B10000000000000000000006 /* sessions.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000006 /* sessions.json */; };
+		B10000000000000000000007 /* session_created.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000007 /* session_created.json */; };
+		B10000000000000000000008 /* session_ended.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000008 /* session_ended.json */; };
+		B10000000000000000000009 /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000009 /* progress.json */; };
+		B1000000000000000000000A /* progress_entry.json in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000A /* progress_entry.json */; };
+		B1000000000000000000000B /* review.json in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000B /* review.json */; };
+		B1000000000000000000000C /* add_book_response.json in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000C /* add_book_response.json */; };
+		B1000000000000000000000D /* search_results.json in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000D /* search_results.json */; };
+		B1000000000000000000000E /* user_profile.json in Resources */ = {isa = PBXBuildFile; fileRef = F1000000000000000000000E /* user_profile.json */; };
+		/* UITest sources */
+		B20000000000000000000001 /* BaseUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000001 /* BaseUITest.swift */; };
+		B20000000000000000000002 /* AuthUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000002 /* AuthUITests.swift */; };
+		B20000000000000000000003 /* DashboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000003 /* DashboardUITests.swift */; };
+		B20000000000000000000004 /* LibraryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000004 /* LibraryUITests.swift */; };
+		B20000000000000000000005 /* BookDetailUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000005 /* BookDetailUITests.swift */; };
+		B20000000000000000000006 /* GoalsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000006 /* GoalsUITests.swift */; };
+		B20000000000000000000007 /* ProfileUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20000000000000000000007 /* ProfileUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		D8DF0B18A22516D82EED955C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 244D37332B44DAC3BC5069E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B519B15019015B96F25DAD5;
+			remoteInfo = ReadRise;
+		};
+		T10000000000000000000003 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 244D37332B44DAC3BC5069E2 /* Project object */;
 			proxyType = 1;
@@ -79,6 +109,30 @@
 		F46F53A347587387BD9FB014 /* ReadRiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRiseApp.swift; sourceTree = "<group>"; };
 		F76EC5196782CA8BE5320EB2 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		FF28F448473C971C77BEA204 /* BookDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewModel.swift; sourceTree = "<group>"; };
+		/* Testing infrastructure */
+		F10000000000000000000001 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		F10000000000000000000002 /* stats.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stats.json; sourceTree = "<group>"; };
+		F10000000000000000000003 /* library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = library.json; sourceTree = "<group>"; };
+		F10000000000000000000004 /* goals.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = goals.json; sourceTree = "<group>"; };
+		F10000000000000000000005 /* goal_created.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = goal_created.json; sourceTree = "<group>"; };
+		F10000000000000000000006 /* sessions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sessions.json; sourceTree = "<group>"; };
+		F10000000000000000000007 /* session_created.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = session_created.json; sourceTree = "<group>"; };
+		F10000000000000000000008 /* session_ended.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = session_ended.json; sourceTree = "<group>"; };
+		F10000000000000000000009 /* progress.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
+		F1000000000000000000000A /* progress_entry.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = progress_entry.json; sourceTree = "<group>"; };
+		F1000000000000000000000B /* review.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = review.json; sourceTree = "<group>"; };
+		F1000000000000000000000C /* add_book_response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = add_book_response.json; sourceTree = "<group>"; };
+		F1000000000000000000000D /* search_results.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = search_results.json; sourceTree = "<group>"; };
+		F1000000000000000000000E /* user_profile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = user_profile.json; sourceTree = "<group>"; };
+		/* UITest files */
+		F20000000000000000000001 /* BaseUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseUITest.swift; sourceTree = "<group>"; };
+		F20000000000000000000002 /* AuthUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUITests.swift; sourceTree = "<group>"; };
+		F20000000000000000000003 /* DashboardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardUITests.swift; sourceTree = "<group>"; };
+		F20000000000000000000004 /* LibraryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryUITests.swift; sourceTree = "<group>"; };
+		F20000000000000000000005 /* BookDetailUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailUITests.swift; sourceTree = "<group>"; };
+		F20000000000000000000006 /* GoalsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsUITests.swift; sourceTree = "<group>"; };
+		F20000000000000000000007 /* ProfileUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUITests.swift; sourceTree = "<group>"; };
+		F20000000000000000000008 /* ReadRiseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReadRiseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +191,7 @@
 				CD84E9944A48ADC0FBC074A4 /* Models */,
 				9992648F8516523011B68159 /* Resources */,
 				F593F5C2266E791AD82A8147 /* Services */,
+				G10000000000000000000001 /* Testing */,
 			);
 			path = ReadRise;
 			sourceTree = "<group>";
@@ -205,6 +260,7 @@
 			children = (
 				53571CDD217D7A688E06939D /* ReadRise */,
 				E6321104B50727A91BABFED6 /* ReadRiseTests */,
+				G10000000000000000000003 /* ReadRiseUITests */,
 				E55258B4E6EFC1528A13A757 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -222,6 +278,7 @@
 			children = (
 				62E0C93DE9392F0F73F9EC7A /* ReadRise.app */,
 				118671960697B6C86BB4F40F /* ReadRiseTests.xctest */,
+				F20000000000000000000008 /* ReadRiseUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -256,6 +313,67 @@
 				5248FE0D1876483545E57B19 /* TimerService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		/* Testing group */
+		G10000000000000000000001 /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000001 /* MockURLProtocol.swift */,
+				G10000000000000000000002 /* Fixtures */,
+			);
+			path = Testing;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000002 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				F10000000000000000000002 /* stats.json */,
+				F10000000000000000000003 /* library.json */,
+				F10000000000000000000004 /* goals.json */,
+				F10000000000000000000005 /* goal_created.json */,
+				F10000000000000000000006 /* sessions.json */,
+				F10000000000000000000007 /* session_created.json */,
+				F10000000000000000000008 /* session_ended.json */,
+				F10000000000000000000009 /* progress.json */,
+				F1000000000000000000000A /* progress_entry.json */,
+				F1000000000000000000000B /* review.json */,
+				F1000000000000000000000C /* add_book_response.json */,
+				F1000000000000000000000D /* search_results.json */,
+				F1000000000000000000000E /* user_profile.json */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		/* ReadRiseUITests group */
+		G10000000000000000000003 /* ReadRiseUITests */ = {
+			isa = PBXGroup;
+			children = (
+				G10000000000000000000004 /* Infrastructure */,
+				G10000000000000000000005 /* Tests */,
+			);
+			path = ReadRiseUITests;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000004 /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				F20000000000000000000001 /* BaseUITest.swift */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		G10000000000000000000005 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F20000000000000000000002 /* AuthUITests.swift */,
+				F20000000000000000000003 /* DashboardUITests.swift */,
+				F20000000000000000000004 /* LibraryUITests.swift */,
+				F20000000000000000000005 /* BookDetailUITests.swift */,
+				F20000000000000000000006 /* GoalsUITests.swift */,
+				F20000000000000000000007 /* ProfileUITests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +418,24 @@
 			productReference = 118671960697B6C86BB4F40F /* ReadRiseTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		T10000000000000000000001 /* ReadRiseUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = T10000000000000000000007 /* Build configuration list for PBXNativeTarget "ReadRiseUITests" */;
+			buildPhases = (
+				T10000000000000000000002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				T10000000000000000000004 /* PBXTargetDependency */,
+			);
+			name = ReadRiseUITests;
+			packageProductDependencies = (
+			);
+			productName = ReadRiseUITests;
+			productReference = F20000000000000000000008 /* ReadRiseUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -308,6 +444,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					T10000000000000000000001 = {
+						TestTargetID = 0B519B15019015B96F25DAD5;
+					};
+				};
 			};
 			buildConfigurationList = 6BE600D68F6325151276F61A /* Build configuration list for PBXProject "ReadRise" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -328,6 +469,7 @@
 			targets = (
 				0B519B15019015B96F25DAD5 /* ReadRise */,
 				5540814AFCA6A6B1064F02B3 /* ReadRiseTests */,
+				T10000000000000000000001 /* ReadRiseUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -338,6 +480,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				771E2EABC5803A8560B56674 /* Assets.xcassets in Resources */,
+				B10000000000000000000002 /* stats.json in Resources */,
+				B10000000000000000000003 /* library.json in Resources */,
+				B10000000000000000000004 /* goals.json in Resources */,
+				B10000000000000000000005 /* goal_created.json in Resources */,
+				B10000000000000000000006 /* sessions.json in Resources */,
+				B10000000000000000000007 /* session_created.json in Resources */,
+				B10000000000000000000008 /* session_ended.json in Resources */,
+				B10000000000000000000009 /* progress.json in Resources */,
+				B1000000000000000000000A /* progress_entry.json in Resources */,
+				B1000000000000000000000B /* review.json in Resources */,
+				B1000000000000000000000C /* add_book_response.json in Resources */,
+				B1000000000000000000000D /* search_results.json in Resources */,
+				B1000000000000000000000E /* user_profile.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +536,21 @@
 				DD9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift in Sources */,
 				3C09D195853580B5FF6A710D /* TimerService.swift in Sources */,
 				83039ABBAAFA4132999BA7FB /* Color+Hex.swift in Sources */,
+				B10000000000000000000001 /* MockURLProtocol.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		T10000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B20000000000000000000001 /* BaseUITest.swift in Sources */,
+				B20000000000000000000002 /* AuthUITests.swift in Sources */,
+				B20000000000000000000003 /* DashboardUITests.swift in Sources */,
+				B20000000000000000000004 /* LibraryUITests.swift in Sources */,
+				B20000000000000000000005 /* BookDetailUITests.swift in Sources */,
+				B20000000000000000000006 /* GoalsUITests.swift in Sources */,
+				B20000000000000000000007 /* ProfileUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +561,11 @@
 			isa = PBXTargetDependency;
 			target = 0B519B15019015B96F25DAD5 /* ReadRise */;
 			targetProxy = D8DF0B18A22516D82EED955C /* PBXContainerItemProxy */;
+		};
+		T10000000000000000000004 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B519B15019015B96F25DAD5 /* ReadRise */;
+			targetProxy = T10000000000000000000003 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -531,6 +706,44 @@
 			};
 			name = Release;
 		};
+		T10000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = U8PPEW6FJ6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.readrise.app.uitests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReadRise;
+			};
+			name = Debug;
+		};
+		T10000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = U8PPEW6FJ6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.readrise.app.uitests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReadRise;
+			};
+			name = Release;
+		};
 		EA7385CE452D091A85DBD0E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -618,6 +831,15 @@
 			buildConfigurations = (
 				2097776BAABEE418B6F0769F /* Debug */,
 				329E8E27E5E53130760EEEC7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		T10000000000000000000007 /* Build configuration list for PBXNativeTarget "ReadRiseUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				T10000000000000000000005 /* Debug */,
+				T10000000000000000000006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

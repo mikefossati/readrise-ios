@@ -1,0 +1,70 @@
+{
+  "data": [
+    {
+      "id": "ub-001",
+      "shelf": "reading",
+      "format": "physical",
+      "book_id": "b-001",
+      "updated_at": "2026-02-28T10:00:00Z",
+      "started_at": "2026-02-01T10:00:00Z",
+      "finished_at": null,
+      "abandoned_at": null,
+      "book": {
+        "id": "b-001",
+        "title": "The Great Gatsby",
+        "authors": ["F. Scott Fitzgerald"],
+        "cover_url": "https://books.google.com/books/content?id=test1&printsec=frontcover&img=1&zoom=1",
+        "page_count": 180,
+        "genres": ["Classic Fiction"],
+        "subtitle": null,
+        "publisher": "Scribner",
+        "published_date": "1925",
+        "language": "en"
+      }
+    },
+    {
+      "id": "ub-002",
+      "shelf": "want_to_read",
+      "format": "ebook",
+      "book_id": "b-002",
+      "updated_at": "2026-02-20T10:00:00Z",
+      "started_at": null,
+      "finished_at": null,
+      "abandoned_at": null,
+      "book": {
+        "id": "b-002",
+        "title": "Dune",
+        "authors": ["Frank Herbert"],
+        "cover_url": "https://books.google.com/books/content?id=test2&printsec=frontcover&img=1&zoom=1",
+        "page_count": 412,
+        "genres": ["Science Fiction"],
+        "subtitle": null,
+        "publisher": "Chilton Books",
+        "published_date": "1965",
+        "language": "en"
+      }
+    },
+    {
+      "id": "ub-003",
+      "shelf": "finished",
+      "format": "physical",
+      "book_id": "b-003",
+      "updated_at": "2026-01-15T10:00:00Z",
+      "started_at": "2025-12-01T10:00:00Z",
+      "finished_at": "2026-01-15T10:00:00Z",
+      "abandoned_at": null,
+      "book": {
+        "id": "b-003",
+        "title": "Sapiens",
+        "authors": ["Yuval Noah Harari"],
+        "cover_url": "https://books.google.com/books/content?id=test3&printsec=frontcover&img=1&zoom=1",
+        "page_count": 443,
+        "genres": ["History"],
+        "subtitle": "A Brief History of Humankind",
+        "publisher": "Harper",
+        "published_date": "2015",
+        "language": "en"
+      }
+    }
+  ]
+}

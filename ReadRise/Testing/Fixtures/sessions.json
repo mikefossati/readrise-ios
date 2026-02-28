@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "id": "sess-001",
+      "started_at": "2026-02-27T20:00:00Z",
+      "ended_at": "2026-02-27T21:10:00Z",
+      "duration_seconds": 4200,
+      "pages_read": 38,
+      "pages_per_hour": 32.57
+    },
+    {
+      "id": "sess-002",
+      "started_at": "2026-02-26T19:30:00Z",
+      "ended_at": "2026-02-26T20:45:00Z",
+      "duration_seconds": 4500,
+      "pages_read": 45,
+      "pages_per_hour": 36.0
+    }
+  ]
+}

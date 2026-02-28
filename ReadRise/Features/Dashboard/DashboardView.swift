@@ -63,6 +63,7 @@ struct DashboardView: View {
             Text("\(greeting).")
                 .font(.custom("Georgia", size: 20).bold())
                 .foregroundStyle(Color.rrLabel)
+                .accessibilityIdentifier("dashboard.greeting")
             Spacer()
             Text(today)
                 .font(.caption)
@@ -87,6 +88,7 @@ struct DashboardView: View {
                         CurrentlyReadingRow(userBook: book)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier("dashboard.continueReading.\(book.id)")
                 }
             }
         }
@@ -102,6 +104,7 @@ struct DashboardView: View {
             goalPercent: vm.goalPercent,
             paceMessage: vm.paceMessage
         )
+        .accessibilityIdentifier("dashboard.goalCard")
     }
 
     // MARK: - Stats grid (with icons)
@@ -124,6 +127,7 @@ struct DashboardView: View {
                      value: vm.stats?.averagePagesPerHour.map { "\($0)" } ?? "—",
                      label: "pages\nper hr")
         }
+        .accessibilityIdentifier("dashboard.statsGrid")
     }
 
     // MARK: - Streak badge (compact inline)
@@ -146,6 +150,7 @@ struct DashboardView: View {
         .background(streak > 0 ? Color.rrAmberTint : Color.rrCard)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.rrBorder, lineWidth: 0.5))
+        .accessibilityIdentifier("dashboard.streakBadge")
     }
 
     // MARK: - Recent sessions
