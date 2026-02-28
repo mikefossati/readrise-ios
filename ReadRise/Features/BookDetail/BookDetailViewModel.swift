@@ -24,6 +24,10 @@ final class BookDetailViewModel {
     var reviewBody = ""
     var isSavingReview = false
 
+    // Delete
+    var wasDeleted = false
+    var isDeletingBook = false
+
     struct ReviewData: Decodable, Sendable {
         let id: String
         let rating: Double
@@ -159,6 +163,21 @@ final class BookDetailViewModel {
             errorMessage = error.localizedDescription
         }
         isSavingReview = false
+    }
+
+    // MARK: - Delete
+
+    func deleteBook() async {
+        isDeletingBook = true
+        do {
+            try await APIClient.shared.delete("/api/library/\(userBook.id)")
+            await AppCache.shared.invalidateLibrary()
+            await AppCache.shared.invalidateStats()
+            wasDeleted = true
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isDeletingBook = false
     }
 
     // MARK: - Shelf

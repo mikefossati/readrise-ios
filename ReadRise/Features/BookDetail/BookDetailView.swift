@@ -4,6 +4,7 @@ import SwiftUI
 struct BookDetailView: View {
     @State var vm: BookDetailViewModel
     @State private var showShelfPicker = false
+    @State private var showDeleteConfirm = false
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focusedField: Bool
 
@@ -34,7 +35,26 @@ struct BookDetailView: View {
                 reviewSection
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
-                    .padding(.bottom, 32)
+
+                Button(role: .destructive) {
+                    showDeleteConfirm = true
+                } label: {
+                    HStack(spacing: 6) {
+                        if vm.isDeletingBook {
+                            ProgressView().tint(.red)
+                        } else {
+                            Image(systemName: "trash")
+                            Text("Remove from library")
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .tint(.red)
+                .padding(.horizontal, 16)
+                .padding(.top, 24)
+                .padding(.bottom, 32)
+                .disabled(vm.isDeletingBook)
             }
         }
         .scrollDismissesKeyboard(.immediately)
@@ -46,6 +66,19 @@ struct BookDetailView: View {
                 Spacer()
                 Button("Done") { focusedField = false }
             }
+        }
+        .onChange(of: vm.wasDeleted) { _, deleted in
+            if deleted { dismiss() }
+        }
+        .confirmationDialog(
+            "Remove \"\(vm.userBook.book.title)\" from your library?",
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Remove", role: .destructive) {
+                Task { await vm.deleteBook() }
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .alert("Error", isPresented: Binding(
             get: { vm.errorMessage != nil },

@@ -107,6 +107,9 @@ struct LibraryView: View {
             }
         }
         .task { await vm.load() }
+        .onChange(of: selectedBook) { old, new in
+            if old != nil && new == nil { Task { await vm.load(force: true) } }
+        }
     }
 
     // MARK: - Now Reading band
@@ -127,6 +130,13 @@ struct LibraryView: View {
                             NowReadingCard(userBook: book)
                         }
                         .buttonStyle(.plain)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                Task { await vm.deleteBook(userBookId: book.id) }
+                            } label: {
+                                Label("Remove from library", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }
@@ -161,6 +171,13 @@ struct LibraryView: View {
                             ShelfCoverCard(userBook: book)
                         }
                         .buttonStyle(.plain)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                Task { await vm.deleteBook(userBookId: book.id) }
+                            } label: {
+                                Label("Remove from library", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }

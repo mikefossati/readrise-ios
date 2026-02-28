@@ -26,6 +26,17 @@ final class LibraryViewModel {
         isLoading = false
     }
 
+    func deleteBook(userBookId: String) async {
+        do {
+            try await APIClient.shared.delete("/api/library/\(userBookId)")
+            await AppCache.shared.invalidateLibrary()
+            await AppCache.shared.invalidateStats()
+            await load(force: true)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     @discardableResult
     func addBook(volumeId: String, shelf: String = "reading") async throws -> UserBook {
         isAddingBook = true
