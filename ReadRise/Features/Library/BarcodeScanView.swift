@@ -1,5 +1,6 @@
-import SwiftUI
 import AVFoundation
+import SwiftUI
+import UIKit
 
 struct BarcodeScanView: View {
     let onScanned: (String) -> Void
@@ -7,15 +8,47 @@ struct BarcodeScanView: View {
     @State private var found = false
     @State private var lookingUp = false
     @State private var errorMessage: String?
+    @State private var cameraPermission: AVAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
 
     var body: some View {
         ZStack {
-            BarcodeCameraView { code in
-                guard !found else { return }
-                found = true
-                Task { await lookUp(isbn: code) }
+            Group {
+                switch cameraPermission {
+                case .authorized:
+                    BarcodeCameraView { code in
+                        guard !found else { return }
+                        found = true
+                        Task { await lookUp(isbn: code) }
+                    }
+                    .ignoresSafeArea()
+                case .notDetermined:
+                    Color.black.ignoresSafeArea()
+                        .task {
+                            let granted = await AVCaptureDevice.requestAccess(for: .video)
+                            cameraPermission = granted ? .authorized : .denied
+                        }
+                default:
+                    ZStack {
+                        Color.black.ignoresSafeArea()
+                        VStack(spacing: 16) {
+                            Image(systemName: "camera.slash")
+                                .font(.system(size: 48))
+                                .foregroundStyle(Color(hex: "#e8923a"))
+                            Text("Camera access is required to scan barcodes.")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.white)
+                            Button("Open Settings") {
+                                if let url = URL(string: UIApplication.openSettingsURLString) {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(Color(hex: "#e8923a"))
+                        }
+                        .padding()
+                    }
+                }
             }
-            .ignoresSafeArea()
 
             // Overlay
             VStack {

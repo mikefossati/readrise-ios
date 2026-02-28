@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 
 private let kTimerStartedAt = "rr_timer_started_at"
 private let kTimerSessionId = "rr_timer_session_id"
@@ -21,6 +22,7 @@ final class TimerService {
 
     private init() {
         restoreFromBackground()
+        registerTerminationObserver()
     }
 
     // MARK: - Start
@@ -73,12 +75,39 @@ final class TimerService {
         else { return }
 
         let start = Date(timeIntervalSinceReferenceDate: startInterval)
+        let elapsed = Int(Date().timeIntervalSince(start))
+
+        // Discard sessions older than 8 hours — likely orphaned from a crash
+        if elapsed > 8 * 3600 {
+            UserDefaults.standard.removeObject(forKey: kTimerStartedAt)
+            UserDefaults.standard.removeObject(forKey: kTimerSessionId)
+            UserDefaults.standard.removeObject(forKey: kTimerUserBookId)
+            return
+        }
+
         self.startedAt = start
         self.activeSessionId = sessionId
         self.activeUserBookId = userBookId
         self.isRunning = true
-        self.elapsedSeconds = Int(Date().timeIntervalSince(start))
+        self.elapsedSeconds = elapsed
         startDisplayTimer()
+    }
+
+    // MARK: - Termination observer
+
+    private func registerTerminationObserver() {
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.willTerminateNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self, self.isRunning, let sessionId = self.activeSessionId else { return }
+            Task {
+                struct StopBody: Encodable { let sessionId: String }
+                try? await APIClient.shared.put("/api/timer/stop", body: StopBody(sessionId: sessionId))
+                await MainActor.run { self.stop() }
+            }
+        }
     }
 
     // MARK: - Display timer (updates elapsedSeconds every second)

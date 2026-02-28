@@ -23,12 +23,14 @@
 		83039ABBAAFA4132999BA7FB /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E356E729B7D6437B838A1468 /* Color+Hex.swift */; };
 		8DE210DED156426546D4C9CA /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541C8B4C4B64BECBF8DF75FF /* RootView.swift */; };
 		A389B1213531B3172E32FBC5 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 96410145F170529EE8DDFC51 /* Supabase */; };
+		FF1A2B3C4D5E6F7A8B9C0D1E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = FF2A2B3C4D5E6F7A8B9C0D1E /* Kingfisher */; };
 		AC1234567890ABCDEF012345 /* AppCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1234567890ABCDEF012345 /* AppCache.swift */; };
-		DD9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift */; };
+		AA9B1C2D3E4F5A6B7C8D9E0F /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9B1C2D3E4F5A6B7C8D9E0F /* NetworkMonitor.swift */; };
 		C58A8D80E78BAFCF7A08EF78 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67ED065A09DA3AD1FF07437 /* DashboardView.swift */; };
 		C58E09B4594FCF81774D3FE8 /* BookSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B4950B0DE28BB83DB41E2 /* BookSearchView.swift */; };
 		CC938CD8693C029E6B2F94D6 /* BookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315DC34E27F6D16515685384 /* BookDetailView.swift */; };
 		CFEA13373EC3D6BF3242CD36 /* GoalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252E059B0D6FA73640859381 /* GoalsView.swift */; };
+		DD9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift */; };
 		EF1D169B80F793985D6C7BD1 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D46C01007A77F7F4438293 /* MainTabView.swift */; };
 		F4735B4DAF612E1C02D6FBC0 /* BarcodeScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F780BC237AA1DCB780E7D62 /* BarcodeScanView.swift */; };
 		F4DE243330926D3ECB733D45 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB52D42D13C26EA2652FCA /* Models.swift */; };
@@ -69,10 +71,11 @@
 		A36401AEE9324FC3215F181E /* GoalsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalsViewModel.swift; sourceTree = "<group>"; };
 		A67ED065A09DA3AD1FF07437 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		BC1234567890ABCDEF012345 /* AppCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCache.swift; sourceTree = "<group>"; };
-		EE9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		BB9B1C2D3E4F5A6B7C8D9E0F /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		C6F551276552734A28EBBE5C /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		D6C5C3FA25EA2B3F5A276633 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		E356E729B7D6437B838A1468 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		EE9A1B2C3E4F5A6B7C8D9E0F /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		F46F53A347587387BD9FB014 /* ReadRiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadRiseApp.swift; sourceTree = "<group>"; };
 		F76EC5196782CA8BE5320EB2 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		FF28F448473C971C77BEA204 /* BookDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewModel.swift; sourceTree = "<group>"; };
@@ -84,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A389B1213531B3172E32FBC5 /* Supabase in Frameworks */,
+				FF1A2B3C4D5E6F7A8B9C0D1E /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +252,7 @@
 				4F278722EE03C1A58BC2E7CE /* APIClient.swift */,
 				BC1234567890ABCDEF012345 /* AppCache.swift */,
 				8BF91A600AC933C92DEDEEF1 /* AuthService.swift */,
+				BB9B1C2D3E4F5A6B7C8D9E0F /* NetworkMonitor.swift */,
 				5248FE0D1876483545E57B19 /* TimerService.swift */,
 			);
 			path = Services;
@@ -271,6 +276,7 @@
 			name = ReadRise;
 			packageProductDependencies = (
 				96410145F170529EE8DDFC51 /* Supabase */,
+				FF2A2B3C4D5E6F7A8B9C0D1E /* Kingfisher */,
 			);
 			productName = ReadRise;
 			productReference = 62E0C93DE9392F0F73F9EC7A /* ReadRise.app */;
@@ -302,11 +308,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2620;
-				TargetAttributes = {
-					0B519B15019015B96F25DAD5 = {
-						DevelopmentTeam = "";
-					};
-				};
 			};
 			buildConfigurationList = 6BE600D68F6325151276F61A /* Build configuration list for PBXProject "ReadRise" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -320,6 +321,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F1D65520062EE1A5E3508A7B /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				FF3A2B3C4D5E6F7A8B9C0D1E /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -356,6 +358,7 @@
 			files = (
 				0D354572EC1596F8274EC250 /* APIClient.swift in Sources */,
 				AC1234567890ABCDEF012345 /* AppCache.swift in Sources */,
+				AA9B1C2D3E4F5A6B7C8D9E0F /* NetworkMonitor.swift in Sources */,
 				786356E622C65A89825FA42A /* AuthService.swift in Sources */,
 				0E5CBAEAF8911CA7EFE00BC2 /* AuthView.swift in Sources */,
 				F4735B4DAF612E1C02D6FBC0 /* BarcodeScanView.swift in Sources */,
@@ -398,7 +401,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ReadRise/Resources/ReadRise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U8PPEW6FJ6;
 				INFOPLIST_FILE = ReadRise/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -484,7 +487,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ReadRise/Resources/ReadRise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = U8PPEW6FJ6;
 				INFOPLIST_FILE = ReadRise/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -630,6 +633,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		FF3A2B3C4D5E6F7A8B9C0D1E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -637,6 +648,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1D65520062EE1A5E3508A7B /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
+		};
+		FF2A2B3C4D5E6F7A8B9C0D1E /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF3A2B3C4D5E6F7A8B9C0D1E /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

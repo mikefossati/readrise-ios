@@ -1,8 +1,10 @@
+import Kingfisher
 import SwiftUI
 
 struct ProfileView: View {
     @Environment(AuthService.self) private var auth
     @State private var displayName = ""
+    @State private var avatarUrl: String?
     @State private var isSaving = false
     @State private var isLoading = true
     @State private var showSignOutConfirm = false
@@ -13,9 +15,19 @@ struct ProfileView: View {
             List {
                 Section {
                     HStack(spacing: 14) {
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 48))
-                            .foregroundStyle(Color.rrAmber)
+                        Group {
+                            if let urlStr = avatarUrl, let url = URL(string: urlStr) {
+                                KFImage(url)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 48, height: 48)
+                                    .clipShape(Circle())
+                            } else {
+                                Image(systemName: "person.circle.fill")
+                                    .font(.system(size: 48))
+                                    .foregroundStyle(Color.rrAmber)
+                            }
+                        }
                         VStack(alignment: .leading, spacing: 2) {
                             Text(displayName.isEmpty ? "Reader" : displayName)
                                 .font(.headline)
@@ -80,6 +92,7 @@ struct ProfileView: View {
         do {
             let resp: APIResponse<UserProfile> = try await APIClient.shared.get("/api/user/profile")
             displayName = resp.data.displayName ?? ""
+            avatarUrl = resp.data.avatarUrl
         } catch {
             errorMessage = error.localizedDescription
         }

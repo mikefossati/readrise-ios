@@ -1,3 +1,4 @@
+import Kingfisher
 import SwiftUI
 
 struct DashboardView: View {
@@ -246,13 +247,12 @@ private struct CurrentlyReadingRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            AsyncImage(url: userBook.book.coverURL) { img in
-                img.resizable().scaledToFill()
-            } placeholder: {
-                Rectangle().fill(Color.rrFill)
-            }
-            .frame(width: 44, height: 64)
-            .clipShape(RoundedRectangle(cornerRadius: 6))
+            KFImage(userBook.book.coverURL)
+                .resizable()
+                .scaledToFill()
+                .placeholder { Rectangle().fill(Color.rrFill) }
+                .frame(width: 44, height: 64)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(userBook.book.title)

@@ -1,3 +1,4 @@
+import Kingfisher
 import SwiftUI
 
 struct LibraryView: View {
@@ -178,13 +179,12 @@ private struct NowReadingCard: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            AsyncImage(url: userBook.book.coverURL) { img in
-                img.resizable().scaledToFill()
-            } placeholder: {
-                Rectangle().fill(Color.rrFill)
-            }
-            .frame(width: 56, height: 84)
-            .clipShape(RoundedRectangle(cornerRadius: 6))
+            KFImage(userBook.book.coverURL)
+                .resizable()
+                .scaledToFill()
+                .placeholder { Rectangle().fill(Color.rrFill) }
+                .frame(width: 56, height: 84)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(userBook.book.title)
@@ -219,21 +219,22 @@ private struct ShelfCoverCard: View {
 
     var body: some View {
         VStack(spacing: 6) {
-            AsyncImage(url: userBook.book.coverURL) { img in
-                img.resizable().scaledToFill()
-            } placeholder: {
-                Rectangle()
-                    .fill(Color.rrFill)
-                    .overlay(
-                        Text(userBook.book.title)
-                            .font(.system(size: 9))
-                            .foregroundStyle(Color.rrSecondaryLabel)
-                            .multilineTextAlignment(.center)
-                            .padding(4)
-                    )
-            }
-            .aspectRatio(2/3, contentMode: .fill)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            KFImage(userBook.book.coverURL)
+                .resizable()
+                .scaledToFill()
+                .placeholder {
+                    Rectangle()
+                        .fill(Color.rrFill)
+                        .overlay(
+                            Text(userBook.book.title)
+                                .font(.system(size: 9))
+                                .foregroundStyle(Color.rrSecondaryLabel)
+                                .multilineTextAlignment(.center)
+                                .padding(4)
+                        )
+                }
+                .aspectRatio(2/3, contentMode: .fill)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
 
             Text(userBook.book.title)
                 .font(.system(size: 11).weight(.medium))

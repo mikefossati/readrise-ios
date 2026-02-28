@@ -12,7 +12,7 @@ struct APIErrorResponse: Decodable {
 
 // MARK: - Book & Library
 
-struct Book: Decodable, Identifiable, Hashable, Sendable {
+struct Book: Codable, Identifiable, Hashable, Sendable {
     static func == (lhs: Book, rhs: Book) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
     let id: String
@@ -30,7 +30,7 @@ struct Book: Decodable, Identifiable, Hashable, Sendable {
     var coverURL: URL? { coverUrl.flatMap(URL.init) }
 }
 
-struct UserBook: Decodable, Identifiable, Hashable, Sendable {
+struct UserBook: Codable, Identifiable, Hashable, Sendable {
     static func == (lhs: UserBook, rhs: UserBook) -> Bool { lhs.id == rhs.id }
     func hash(into hasher: inout Hasher) { hasher.combine(id) }
     let id: String
@@ -86,7 +86,7 @@ struct ReadingSession: Decodable, Identifiable, Sendable {
 
 // MARK: - Goals
 
-struct Goal: Decodable, Identifiable, Sendable {
+struct Goal: Codable, Identifiable, Sendable {
     let id: String
     let year: Int
     let goalType: String
@@ -96,7 +96,7 @@ struct Goal: Decodable, Identifiable, Sendable {
 
 // MARK: - Stats
 
-struct Stats: Decodable, Sendable {
+struct Stats: Codable, Sendable {
     let booksReadThisYear: Int
     let totalPagesAllTime: Int
     let totalPagesThisYear: Int

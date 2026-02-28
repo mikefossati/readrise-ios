@@ -1,3 +1,4 @@
+import Kingfisher
 import SwiftUI
 
 struct BookSearchView: View {
@@ -54,14 +55,13 @@ private struct BookSearchResultRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            AsyncImage(url: volume.volumeInfo.imageLinks?.thumbnailURL) { img in
-                img.resizable().scaledToFill()
-            } placeholder: {
-                Rectangle().fill(Color(hex: "#ddd5c8"))
-            }
-            .frame(width: 40, height: 60)
-            .cornerRadius(5)
-            .clipped()
+            KFImage(volume.volumeInfo.imageLinks?.thumbnailURL)
+                .resizable()
+                .scaledToFill()
+                .placeholder { Rectangle().fill(Color(hex: "#ddd5c8")) }
+                .frame(width: 40, height: 60)
+                .cornerRadius(5)
+                .clipped()
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(volume.volumeInfo.title)

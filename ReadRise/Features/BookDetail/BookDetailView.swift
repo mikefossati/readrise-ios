@@ -1,3 +1,4 @@
+import Kingfisher
 import SwiftUI
 
 struct BookDetailView: View {
@@ -52,14 +53,13 @@ struct BookDetailView: View {
 
     private var bookHeader: some View {
         HStack(alignment: .top, spacing: 16) {
-            AsyncImage(url: vm.userBook.book.coverURL) { img in
-                img.resizable().scaledToFill()
-            } placeholder: {
-                Rectangle().fill(Color.rrFill)
-            }
-            .frame(width: 90, height: 134)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .shadow(radius: 4)
+            KFImage(vm.userBook.book.coverURL)
+                .resizable()
+                .scaledToFill()
+                .placeholder { Rectangle().fill(Color.rrFill) }
+                .frame(width: 90, height: 134)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .shadow(radius: 4)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(vm.userBook.book.title)
