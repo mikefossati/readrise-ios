@@ -54,9 +54,9 @@ struct BookDetailView: View {
     private var bookHeader: some View {
         HStack(alignment: .top, spacing: 16) {
             KFImage(vm.userBook.book.coverURL)
+                .placeholder { Rectangle().fill(Color.rrFill) }
                 .resizable()
                 .scaledToFill()
-                .placeholder { Rectangle().fill(Color.rrFill) }
                 .frame(width: 90, height: 134)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .shadow(radius: 4)

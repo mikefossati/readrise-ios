@@ -248,9 +248,9 @@ private struct CurrentlyReadingRow: View {
     var body: some View {
         HStack(spacing: 12) {
             KFImage(userBook.book.coverURL)
+                .placeholder { Rectangle().fill(Color.rrFill) }
                 .resizable()
                 .scaledToFill()
-                .placeholder { Rectangle().fill(Color.rrFill) }
                 .frame(width: 44, height: 64)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
 

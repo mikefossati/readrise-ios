@@ -56,9 +56,9 @@ private struct BookSearchResultRow: View {
     var body: some View {
         HStack(spacing: 12) {
             KFImage(volume.volumeInfo.imageLinks?.thumbnailURL)
+                .placeholder { Rectangle().fill(Color(hex: "#ddd5c8")) }
                 .resizable()
                 .scaledToFill()
-                .placeholder { Rectangle().fill(Color(hex: "#ddd5c8")) }
                 .frame(width: 40, height: 60)
                 .cornerRadius(5)
                 .clipped()

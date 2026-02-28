@@ -180,9 +180,9 @@ private struct NowReadingCard: View {
     var body: some View {
         HStack(spacing: 12) {
             KFImage(userBook.book.coverURL)
+                .placeholder { Rectangle().fill(Color.rrFill) }
                 .resizable()
                 .scaledToFill()
-                .placeholder { Rectangle().fill(Color.rrFill) }
                 .frame(width: 56, height: 84)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
 
@@ -220,8 +220,6 @@ private struct ShelfCoverCard: View {
     var body: some View {
         VStack(spacing: 6) {
             KFImage(userBook.book.coverURL)
-                .resizable()
-                .scaledToFill()
                 .placeholder {
                     Rectangle()
                         .fill(Color.rrFill)
@@ -233,6 +231,8 @@ private struct ShelfCoverCard: View {
                                 .padding(4)
                         )
                 }
+                .resizable()
+                .scaledToFill()
                 .aspectRatio(2/3, contentMode: .fill)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
