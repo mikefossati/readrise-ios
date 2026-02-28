@@ -2,8 +2,8 @@ import Network
 import Observation
 
 @Observable
-final class NetworkMonitor {
-    static let shared = NetworkMonitor()
+final class NetworkMonitor: @unchecked Sendable {
+    nonisolated(unsafe) static let shared = NetworkMonitor()
     private(set) var isConnected = true
 
     private let monitor = NWPathMonitor()
