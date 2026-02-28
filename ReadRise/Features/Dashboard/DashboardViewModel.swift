@@ -25,6 +25,9 @@ final class DashboardViewModel {
             goal = goals.first { $0.goalType == "book_count" }
             currentlyReading = allBooks.filter { $0.shelf == "reading" }
 
+            // Reveal content immediately; sessions arrive in the background.
+            isLoading = false
+
             if let firstBook = currentlyReading.first {
                 let sessResp: APIResponse<[ReadingSession]> = try await APIClient.shared.get(
                     "/api/library/\(firstBook.id)/sessions"
@@ -33,8 +36,8 @@ final class DashboardViewModel {
             }
         } catch {
             errorMessage = error.localizedDescription
+            isLoading = false
         }
-        isLoading = false
     }
 
     // MARK: - Goal computed properties

@@ -321,19 +321,28 @@ private struct SessionRow: View {
 // MARK: - Skeleton
 
 private struct DashboardSkeletonView: View {
+    @State private var pulsing = false
+
+    private var shimmer: Color {
+        Color(UIColor.systemGray4).opacity(pulsing ? 0.5 : 1)
+    }
+    private var shimmerLight: Color {
+        Color(UIColor.systemGray5).opacity(pulsing ? 0.5 : 1)
+    }
+
     var body: some View {
         VStack(spacing: 16) {
             HStack {
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.rrFill)
+                    .fill(shimmer)
                     .frame(width: 150, height: 22)
                 Spacer()
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.rrFill)
+                    .fill(shimmer)
                     .frame(width: 60, height: 14)
             }
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.rrCard)
+                .fill(shimmerLight)
                 .frame(height: 104)
             LazyVGrid(
                 columns: Array(repeating: GridItem(.flexible()), count: 4),
@@ -341,14 +350,18 @@ private struct DashboardSkeletonView: View {
             ) {
                 ForEach(0..<4, id: \.self) { _ in
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.rrFill)
+                        .fill(shimmer)
                         .frame(height: 76)
                 }
             }
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color.rrCard)
+                .fill(shimmerLight)
                 .frame(height: 44)
         }
-        .redacted(reason: .placeholder)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
+                pulsing = true
+            }
+        }
     }
 }
