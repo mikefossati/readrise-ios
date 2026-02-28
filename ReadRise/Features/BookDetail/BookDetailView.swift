@@ -55,6 +55,16 @@ struct BookDetailView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 32)
                 .disabled(vm.isDeletingBook)
+                .confirmationDialog(
+                    "Remove \"\(vm.userBook.book.title)\" from your library?",
+                    isPresented: $showDeleteConfirm,
+                    titleVisibility: .visible
+                ) {
+                    Button("Remove", role: .destructive) {
+                        Task { await vm.deleteBook() }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                }
             }
         }
         .scrollDismissesKeyboard(.immediately)
@@ -69,16 +79,6 @@ struct BookDetailView: View {
         }
         .onChange(of: vm.wasDeleted) { _, deleted in
             if deleted { dismiss() }
-        }
-        .confirmationDialog(
-            "Remove \"\(vm.userBook.book.title)\" from your library?",
-            isPresented: $showDeleteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Remove", role: .destructive) {
-                Task { await vm.deleteBook() }
-            }
-            Button("Cancel", role: .cancel) {}
         }
         .alert("Error", isPresented: Binding(
             get: { vm.errorMessage != nil },
