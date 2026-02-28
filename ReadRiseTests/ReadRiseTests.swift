@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import ReadRise
 
@@ -33,7 +34,7 @@ struct ModelsTests {
         #expect(session.formattedDuration == "1h 10m")
     }
 
-    @Test func goalPaceCalculation() async {
+    @Test @MainActor func goalPaceCalculation() {
         let vm = GoalsViewModel()
         // With no data, paceMessage should be nil
         #expect(vm.paceMessage == nil)
