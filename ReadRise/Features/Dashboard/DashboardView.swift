@@ -151,7 +151,7 @@ struct DashboardView: View {
         .background(streak > 0 ? Color.rrAmberTint : Color.rrCard)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.rrBorder, lineWidth: 0.5))
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("dashboard.streakBadge")
     }
 

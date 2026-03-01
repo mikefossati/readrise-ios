@@ -31,16 +31,18 @@ class BaseUITest: XCTestCase {
 
     /// Tap the "Cancel" button inside the frontmost action sheet.
     ///
-    /// SwiftUI's `.confirmationDialog` Cancel has automation type 42 ("link") on
-    /// iOS 16+, so it is invisible to `app.buttons["Cancel"]`. Searching the full
-    /// descendant tree by label finds it regardless of element type.
+    /// UIAlertController (used by SwiftUI `.confirmationDialog`) runs in its own
+    /// UIWindow, separate from the app's main window hierarchy. `app.descendants`
+    /// only searches the main window, so it never finds the Cancel button.
+    /// `app.sheets` crosses UIWindow boundaries; searching its descendants finds
+    /// the element regardless of automation type (type 42 / "link" on iOS 16+).
+    /// Coordinate-tap bypasses the automation-type mismatch check on tap.
     func tapCancel() {
-        let sheet = app.sheets.firstMatch
-        _ = sheet.waitForExistence(timeout: 3)
-        let cancel = app.descendants(matching: .any)
+        XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 3), "Action sheet not found")
+        let cancel = app.sheets.descendants(matching: .any)
             .matching(NSPredicate(format: "label == 'Cancel'"))
             .firstMatch
-        XCTAssertTrue(cancel.waitForExistence(timeout: 3), "Cancel button not found")
-        cancel.tap()
+        XCTAssertTrue(cancel.waitForExistence(timeout: 2), "Cancel not found in action sheet")
+        cancel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
     }
 }
