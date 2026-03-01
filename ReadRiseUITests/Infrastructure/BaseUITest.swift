@@ -31,18 +31,18 @@ class BaseUITest: XCTestCase {
 
     /// Tap the "Cancel" button inside the frontmost action sheet.
     ///
-    /// UIAlertController (used by SwiftUI `.confirmationDialog`) runs in its own
-    /// UIWindow, separate from the app's main window hierarchy. `app.descendants`
-    /// only searches the main window, so it never finds the Cancel button.
-    /// `app.sheets` crosses UIWindow boundaries; searching its descendants finds
-    /// the element regardless of automation type (type 42 / "link" on iOS 16+).
-    /// Coordinate-tap bypasses the automation-type mismatch check on tap.
+    /// SwiftUI `.confirmationDialog` maps to UIAlertController (action-sheet style),
+    /// which runs in its own UIWindow. The Cancel button sits *beside* the action-
+    /// buttons sheet (not inside it), so `app.sheets.descendants` never reaches it.
+    ///
+    /// On iOS 16+ Cancel has XCUIElementType.link (raw value 42) — the same cross-
+    /// window access that `app.buttons` / `app.sheets` use also applies to
+    /// `app.links`, making it the right query type. Coordinate-tap sidesteps the
+    /// automation-type mismatch that blocks a plain `.tap()`.
     func tapCancel() {
         XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 3), "Action sheet not found")
-        let cancel = app.sheets.descendants(matching: .any)
-            .matching(NSPredicate(format: "label == 'Cancel'"))
-            .firstMatch
-        XCTAssertTrue(cancel.waitForExistence(timeout: 2), "Cancel not found in action sheet")
+        let cancel = app.links.matching(NSPredicate(format: "label == 'Cancel'")).firstMatch
+        XCTAssertTrue(cancel.waitForExistence(timeout: 2), "Cancel link not found in action sheet")
         cancel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
     }
 }
