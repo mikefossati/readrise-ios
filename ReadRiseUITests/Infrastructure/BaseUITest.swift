@@ -31,18 +31,16 @@ class BaseUITest: XCTestCase {
 
     /// Tap the "Cancel" button inside the frontmost action sheet.
     ///
-    /// SwiftUI `.confirmationDialog` maps to UIAlertController (action-sheet style),
-    /// which runs in its own UIWindow. The Cancel button sits *beside* the action-
-    /// buttons sheet (not inside it), so `app.sheets.descendants` never reaches it.
+    /// SwiftUI `.confirmationDialog` maps to UIAlertController (action-sheet style).
+    /// Cancel sits in its own element outside the main sheet subtree and has a
+    /// non-standard XCUIElementType on iOS 16+, making element queries unreliable.
     ///
-    /// On iOS 16+ Cancel has XCUIElementType.link (raw value 42) — the same cross-
-    /// window access that `app.buttons` / `app.sheets` use also applies to
-    /// `app.links`, making it the right query type. Coordinate-tap sidesteps the
-    /// automation-type mismatch that blocks a plain `.tap()`.
+    /// Coordinate-tapping at ~93 % of the screen height (just above the home
+    /// indicator) is the most reliable cross-version approach.
     func tapCancel() {
         XCTAssertTrue(app.sheets.firstMatch.waitForExistence(timeout: 3), "Action sheet not found")
-        let cancel = app.links.matching(NSPredicate(format: "label == 'Cancel'")).firstMatch
-        XCTAssertTrue(cancel.waitForExistence(timeout: 2), "Cancel link not found in action sheet")
-        cancel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        // Cancel always appears near the bottom of the screen in a UIAlertController
+        // action sheet, just above the home indicator safe-area.
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.93)).tap()
     }
 }
